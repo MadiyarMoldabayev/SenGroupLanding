@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const ecosystemCompanies = [
   "SenDigital",
@@ -31,16 +32,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <a href="#hero" className="flex items-center gap-3 mb-6 group">
-              <div className="relative w-12 h-12">
-                <div className="absolute inset-0 bg-gradient-to-br from-primary via-secondary to-accent rounded-xl rotate-6 group-hover:rotate-12 transition-transform duration-300" />
-                <div className="absolute inset-0.5 bg-dark rounded-[10px] flex items-center justify-center">
-                  <span className="text-2xl font-bold gradient-text">S</span>
-                </div>
-              </div>
-              <span className="text-2xl font-bold text-white">
-                SEN<span className="text-muted font-normal ml-1">Group</span>
-              </span>
+            <a href="#hero" className="flex items-center mb-6 group">
+              <Image
+                src="/logo.png"
+                alt="SEN Group"
+                width={200}
+                height={55}
+                className="h-12 w-auto brightness-100 group-hover:brightness-110 transition-all duration-300"
+              />
             </a>
             <p className="text-muted max-w-md mb-6 leading-relaxed">
               Экосистема доверия и управления будущего. Мы создаём технологии и
