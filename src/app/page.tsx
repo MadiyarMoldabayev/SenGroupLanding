@@ -3,7 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import ValuesSection from "@/components/ValuesSection";
 import StandardsSection from "@/components/StandardsSection";
 import EcosystemSection from "@/components/EcosystemSection";
-import EcosystemCube from "@/components/EcosystemCube";
+import EcosystemCubeWrapper from "@/components/EcosystemCubeWrapper";
 import FormulaSection from "@/components/FormulaSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
@@ -14,7 +14,7 @@ export default function Home() {
       <Header />
       <HeroSection />
       <ValuesSection />
-      <EcosystemCube />
+      <EcosystemCubeWrapper />
       <EcosystemSection />
       <StandardsSection />
       <FormulaSection />
