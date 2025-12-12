@@ -67,13 +67,6 @@ const companies = [
   },
 ];
 
-const integrations = [
-  { from: "Digital", to: "Consulting", description: "усиливает" },
-  { from: "Finance", to: "Audit", description: "усиливает" },
-  { from: "Media", to: "технологические решения", description: "усиливает" },
-  { from: "FoundationHub", to: "социальный эффект", description: "создаёт" },
-];
-
 export default function EcosystemSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -105,7 +98,7 @@ export default function EcosystemSection() {
         </motion.div>
 
         {/* Companies Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {companies.map((company, index) => (
             <motion.div
               key={company.name}
@@ -128,48 +121,6 @@ export default function EcosystemSection() {
             </motion.div>
           ))}
         </div>
-
-        {/* Integration Flow */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.6 }}
-          className="glass rounded-3xl p-8 md:p-12"
-        >
-          <h3 className="text-2xl md:text-3xl font-bold text-white mb-8 text-center">
-            Совместное создание решений
-          </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {integrations.map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
-                className="text-center p-4"
-              >
-                <div className="flex items-center justify-center gap-2 mb-2">
-                  <span className="text-primary font-semibold">{item.from}</span>
-                  <svg
-                    className="w-4 h-4 text-accent"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 7l5 5m0 0l-5 5m5-5H6"
-                    />
-                  </svg>
-                  <span className="text-secondary font-semibold">{item.to}</span>
-                </div>
-                <p className="text-sm text-muted">{item.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );

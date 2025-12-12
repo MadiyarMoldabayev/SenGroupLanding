@@ -75,34 +75,6 @@ export default function HeroSection() {
             Наша экосистема
           </a>
         </motion.div>
-
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8"
-        >
-          {[
-            { value: "7+", label: "Компаний в экосистеме" },
-            { value: "50+", label: "Проектов реализовано" },
-            { value: "100%", label: "Прозрачность процессов" },
-            { value: "24/7", label: "Поддержка клиентов" },
-          ].map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.6 + i * 0.1 }}
-              className="text-center"
-            >
-              <div className="text-3xl md:text-4xl lg:text-5xl font-bold gradient-text mb-2">
-                {stat.value}
-              </div>
-              <div className="text-sm md:text-base text-muted">{stat.label}</div>
-            </motion.div>
-          ))}
-        </motion.div>
       </div>
 
       {/* Scroll indicator */}
