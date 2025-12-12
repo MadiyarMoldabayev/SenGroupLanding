@@ -22,7 +22,7 @@ module.exports = {
         border: "#30363D",
       },
       fontFamily: {
-        sans: ["Inter", "SF Pro Display", "system-ui", "sans-serif"],
+        sans: ["Manrope", "SF Pro Display", "system-ui", "sans-serif"],
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
