@@ -67,7 +67,11 @@ const companies = [
   },
 ];
 
-export default function EcosystemSection() {
+interface EcosystemSectionProps {
+  locale: string;
+}
+
+export default function EcosystemSection({ locale }: EcosystemSectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 

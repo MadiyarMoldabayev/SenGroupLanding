@@ -104,28 +104,17 @@ const COMPANIES_DATA: CompaniesDataMap = {
   },
 };
 
-export default function EcosystemCube() {
+interface EcosystemCubeProps {
+  locale: string;
+}
+
+export default function EcosystemCube({ locale }: EcosystemCubeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [selectedCompany, setSelectedCompany] = useState<CompanyData | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const sceneRef = useRef<any>(null);
-  const [lang, setLang] = useState("ru");
 
-  useEffect(() => {
-    const savedLang = localStorage.getItem("sen-lang");
-    if (savedLang && ["ru", "kk", "en"].includes(savedLang)) {
-      setLang(savedLang);
-    }
-
-    const handleLangChange = (e: CustomEvent) => {
-      setLang(e.detail);
-    };
-
-    window.addEventListener("langChange", handleLangChange as EventListener);
-    return () => window.removeEventListener("langChange", handleLangChange as EventListener);
-  }, []);
-
-  const t = cubeTranslations[lang as keyof typeof cubeTranslations];
+  const t = cubeTranslations[locale as keyof typeof cubeTranslations] || cubeTranslations.ru;
 
   useEffect(() => {
     if (typeof window === "undefined" || !containerRef.current) return;

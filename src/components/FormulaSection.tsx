@@ -12,7 +12,11 @@ const formulaParts = [
   { text: "Инновации", color: "from-pink-500 to-rose-400" },
 ];
 
-export default function FormulaSection() {
+interface FormulaSectionProps {
+  locale: string;
+}
+
+export default function FormulaSection({ locale }: FormulaSectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 

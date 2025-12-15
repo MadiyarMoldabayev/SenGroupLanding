@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { useRef } from "react";
 
 const valuesData = {
   ru: {
@@ -177,26 +177,15 @@ const icons = [
   <svg key="7" className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
 ];
 
-export default function ValuesSection() {
+interface ValuesSectionProps {
+  locale: string;
+}
+
+export default function ValuesSection({ locale }: ValuesSectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [lang, setLang] = useState("ru");
 
-  useEffect(() => {
-    const savedLang = localStorage.getItem("sen-lang");
-    if (savedLang && ["ru", "kk", "en"].includes(savedLang)) {
-      setLang(savedLang);
-    }
-
-    const handleLangChange = (e: CustomEvent) => {
-      setLang(e.detail);
-    };
-
-    window.addEventListener("langChange", handleLangChange as EventListener);
-    return () => window.removeEventListener("langChange", handleLangChange as EventListener);
-  }, []);
-
-  const t = valuesData[lang as keyof typeof valuesData];
+  const t = valuesData[locale as keyof typeof valuesData] || valuesData.ru;
 
   return (
     <section id="values" className="py-24 md:py-32 relative" ref={ref}>

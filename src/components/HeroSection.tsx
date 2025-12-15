@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 const heroTranslations = {
@@ -30,24 +29,12 @@ const heroTranslations = {
   },
 };
 
-export default function HeroSection() {
-  const [lang, setLang] = useState("ru");
+interface HeroSectionProps {
+  locale: string;
+}
 
-  useEffect(() => {
-    const savedLang = localStorage.getItem("sen-lang");
-    if (savedLang && ["ru", "kk", "en"].includes(savedLang)) {
-      setLang(savedLang);
-    }
-
-    const handleLangChange = (e: CustomEvent) => {
-      setLang(e.detail);
-    };
-
-    window.addEventListener("langChange", handleLangChange as EventListener);
-    return () => window.removeEventListener("langChange", handleLangChange as EventListener);
-  }, []);
-
-  const t = heroTranslations[lang as keyof typeof heroTranslations];
+export default function HeroSection({ locale }: HeroSectionProps) {
+  const t = heroTranslations[locale as keyof typeof heroTranslations] || heroTranslations.ru;
 
   return (
     <section

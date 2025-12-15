@@ -20,7 +20,11 @@ const navigation = [
   { name: "Контакты", href: "#contact" },
 ];
 
-export default function Footer() {
+interface FooterProps {
+  locale: string;
+}
+
+export default function Footer({ locale }: FooterProps) {
   const currentYear = new Date().getFullYear();
 
   return (

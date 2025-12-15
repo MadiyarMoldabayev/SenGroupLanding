@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import cn from "classnames";
@@ -18,58 +17,58 @@ const teamMembers: TeamMember[] = [
   {
     id: 1,
     image: "/team/new-1.png",
-    name: { ru: "Мадияр Молдабаев", kk: "Мадияр Молдабаев", en: "Madiyar Moldabayev" },
-    role: { ru: "Основатель и CEO", kk: "Негізін қалаушы және CEO", en: "Founder & CEO" },
-    expertise: { ru: "Стратегическое управление, цифровая трансформация", kk: "Стратегиялық басқару, цифрлық трансформация", en: "Strategic Management, Digital Transformation" },
-    experience: { ru: "15+ лет опыта в IT и бизнесе", kk: "IT және бизнесте 15+ жыл тәжірибе", en: "15+ years in IT and Business" },
+    name: { en: "Batima Mukina", kk: "Батима Мукина", ru: "Батима Мукина" },
+    role: { en: "Chief Executive Officer", kk: "Бас директор", ru: "Генеральный директор" },
+    expertise: { en: "Grant law, compliance, audit, finance", kk: "Гранттық құқық, комплаенс, аудит, қаржы", ru: "Грантовое право, комплаенс, аудит, финансы" },
+    experience: { en: "10+ years of experience working with NGOs", kk: "ҮЕҰ-мен жұмыс тәжірибесі — 10 жылдан аса", ru: "+10 лет работы с НПО" },
   },
   {
     id: 2,
     image: "/team/new-2.png",
-    name: { ru: "Алия Касымова", kk: "Әлия Қасымова", en: "Aliya Kasymova" },
-    role: { ru: "Директор по развитию", kk: "Даму директоры", en: "Development Director" },
-    expertise: { ru: "Бизнес-развитие, партнёрства", kk: "Бизнес-даму, серіктестіктер", en: "Business Development, Partnerships" },
-    experience: { ru: "10+ лет в консалтинге", kk: "Консалтингте 10+ жыл", en: "10+ years in Consulting" },
+    name: { en: "Aslan Sariev", kk: "Аслан Сариев", ru: "Аслан Сариев" },
+    role: { en: "Chief Operating Officer", kk: "Операциялық директор", ru: "Операционный директор" },
+    expertise: { en: "NGO finance, audit, taxation", kk: "ҮЕҰ қаржысы, аудит, салықтар", ru: "Финансы НПО, аудит, налоги" },
+    experience: { en: "10+ years of experience in the non-profit sector", kk: "Коммерциялық емес секторда 10 жылдан аса тәжірибе", ru: "+10 лет опыта в некоммерческом секторе" },
   },
   {
     id: 3,
     image: "/team/new-3.png",
-    name: { ru: "Арман Сейтказин", kk: "Арман Сейтқазин", en: "Arman Seitkazin" },
-    role: { ru: "Технический директор", kk: "Техникалық директор", en: "CTO" },
-    expertise: { ru: "Архитектура систем, AI/ML", kk: "Жүйелер архитектурасы, AI/ML", en: "System Architecture, AI/ML" },
-    experience: { ru: "12+ лет в разработке", kk: "Әзірлеуде 12+ жыл", en: "12+ years in Development" },
+    name: { en: "Madiyar Moldabayev", kk: "Мадияр Молдабаев", ru: "Мадияр Молдабаев" },
+    role: { en: "Chief Technology Officer", kk: "Техникалық директор", ru: "Технический директор" },
+    expertise: { en: "Data analytics, full-stack development, DevOps, machine learning", kk: "Деректер аналитикасы, Fullstack әзірлеу, DevOps, машинамен оқыту", ru: "Аналитика данных, Fullstack разработка, DevOps, машинное обучение" },
+    experience: { en: "5+ years of implementing IT solutions", kk: "IT шешімдерін енгізу бойынша 5 жылдан аса тәжірибе", ru: "+5 лет внедрения IT-решений" },
   },
   {
     id: 4,
     image: "/team/new-4.png",
-    name: { ru: "Дана Нурланова", kk: "Дана Нұрланова", en: "Dana Nurlanova" },
-    role: { ru: "Финансовый директор", kk: "Қаржы директоры", en: "CFO" },
-    expertise: { ru: "Финансы, инвестиции", kk: "Қаржы, инвестициялар", en: "Finance, Investments" },
-    experience: { ru: "8+ лет в финтехе", kk: "Финтехте 8+ жыл", en: "8+ years in Fintech" },
+    name: { en: "Adil Zhexenov", kk: "Адиль Жексенов", ru: "Адиль Жексенов" },
+    role: { en: "Frontend Developer", kk: "Frontend әзірлеуші", ru: "Frontend разработчик" },
+    expertise: { en: "React, Next.js, TypeScript, Redux Toolkit, responsive interfaces", kk: "React, Next.js, TypeScript, Redux Toolkit, бейімделетін интерфейстер", ru: "React, Next.js, TypeScript, Redux Toolkit, адаптивные интерфейсы" },
+    experience: { en: "3+ years of web application development experience", kk: "Web-қосымшаларды әзірлеуде 3 жылдан аса тәжірибе", ru: "+3 года разработки web-приложений" },
   },
   {
     id: 5,
     image: "/team/new-5.png",
-    name: { ru: "Ерлан Жумабеков", kk: "Ерлан Жұмабеков", en: "Yerlan Zhumabekov" },
-    role: { ru: "Директор по продуктам", kk: "Өнімдер директоры", en: "CPO" },
-    expertise: { ru: "Продуктовый менеджмент, UX", kk: "Өнім менеджменті, UX", en: "Product Management, UX" },
-    experience: { ru: "10+ лет в продуктах", kk: "Өнімдерде 10+ жыл", en: "10+ years in Products" },
+    name: { en: "Adilkhan Alikhanov", kk: "Адилхан Алиханов", ru: "Адилхан Алиханов" },
+    role: { en: "Backend Developer", kk: "Backend әзірлеуші", ru: "Backend разработчик" },
+    expertise: { en: "AI engineer with industrial experience in developing ML solutions, RAG systems, and NLP applications", kk: "ML шешімдерін, RAG жүйелерін және NLP жобаларын өнеркәсіптік деңгейде әзірлеу тәжірибесі бар AI-инженер", ru: "AI-инженер с опытом промышленной разработки ML-решений, RAG-систем и NLP" },
+    experience: { en: "3+ years of commercial development experience", kk: "Коммерциялық әзірлеуде 3 жылдан аса тәжірибе", ru: "+3 года в коммерческой разработке" },
   },
   {
     id: 6,
     image: "/team/new-6.png",
-    name: { ru: "Айгерим Тлеубергенова", kk: "Айгерім Тлеубергенова", en: "Aigerim Tleubergenova" },
-    role: { ru: "Директор по маркетингу", kk: "Маркетинг директоры", en: "CMO" },
-    expertise: { ru: "Маркетинг, бренд-стратегия", kk: "Маркетинг, бренд-стратегия", en: "Marketing, Brand Strategy" },
-    experience: { ru: "9+ лет в маркетинге", kk: "Маркетингте 9+ жыл", en: "9+ years in Marketing" },
+    name: { en: "Ayana Amanzhol", kk: "Аяна Аманжол", ru: "Аяна Аманжол" },
+    role: { en: "Product Designer", kk: "Өнім дизайнері", ru: "Дизайнер по продукту" },
+    expertise: { en: "Product design, ERP and SaaS systems design", kk: "Өнім дизайны, ERP және SaaS жүйелерін жобалау", ru: "Продуктовый дизайн, проектирование ERP, SaaS систем" },
+    experience: { en: "5+ years of experience in product design", kk: "Өнім дизайнында 5 жылдан аса тәжірибе", ru: "+5 лет в продуктовом дизайне" },
   },
   {
     id: 7,
     image: "/team/new-7.jpeg",
-    name: { ru: "Сауле Бекмуратова", kk: "Сәуле Бекмұратова", en: "Saule Bekmuratova" },
-    role: { ru: "HR Директор", kk: "HR Директор", en: "HR Director" },
-    expertise: { ru: "Управление персоналом, культура", kk: "Персоналды басқару, мәдениет", en: "People Management, Culture" },
-    experience: { ru: "11+ лет в HR", kk: "HR-да 11+ жыл", en: "11+ years in HR" },
+    name: { en: "Gulsina Kadyrbekkyzy", kk: "Гүлсіна Қадырбекқызы", ru: "Гульсина Кадырбеккызы" },
+    role: { en: "Project Manager", kk: "Жоба менеджері", ru: "Менеджер проектов" },
+    expertise: { en: "Project management, coordination, planning", kk: "Жобаларды басқару, үйлестіру, жоспарлау", ru: "Управление проектами, координация, планирование" },
+    experience: { en: "4+ years of project management experience", kk: "Жобаларды басқаруда 4 жылдан аса тәжірибе", ru: "+4 года управления проектами" },
   },
 ];
 
@@ -88,27 +87,15 @@ const sectionTranslations = {
   },
 };
 
-export default function TeamSection() {
-  const [lang, setLang] = useState("ru");
+interface TeamSectionProps {
+  locale: string;
+}
 
-  useEffect(() => {
-    const savedLang = localStorage.getItem("sen-lang");
-    if (savedLang && ["ru", "kk", "en"].includes(savedLang)) {
-      setLang(savedLang);
-    }
-
-    const handleLangChange = (e: CustomEvent) => {
-      setLang(e.detail);
-    };
-
-    window.addEventListener("langChange", handleLangChange as EventListener);
-    return () => window.removeEventListener("langChange", handleLangChange as EventListener);
-  }, []);
-
-  const t = sectionTranslations[lang as keyof typeof sectionTranslations];
+export default function TeamSection({ locale }: TeamSectionProps) {
+  const t = sectionTranslations[locale as keyof typeof sectionTranslations] || sectionTranslations.ru;
 
   const getLocalized = (obj: { ru: string; kk: string; en: string }) => {
-    return obj[lang as keyof typeof obj] || obj.ru;
+    return obj[locale as keyof typeof obj] || obj.ru;
   };
 
   return (
@@ -199,4 +186,3 @@ export default function TeamSection() {
     </section>
   );
 }
-

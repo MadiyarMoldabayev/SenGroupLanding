@@ -29,7 +29,10 @@ const EcosystemCube = dynamic(() => import("./EcosystemCube"), {
   ),
 });
 
-export default function EcosystemCubeWrapper() {
-  return <EcosystemCube />;
+interface EcosystemCubeWrapperProps {
+  locale: string;
 }
 
+export default function EcosystemCubeWrapper({ locale }: EcosystemCubeWrapperProps) {
+  return <EcosystemCube locale={locale} />;
+}

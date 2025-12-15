@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import cn from "classnames";
 import Image from "next/image";
+import Link from "next/link";
 
 const languages = [
   { code: "ru", name: "RU", fullName: "Русский" },
@@ -41,18 +42,14 @@ const navTranslations: { [key: string]: { [key: string]: string } } = {
   },
 };
 
-export default function Header() {
+interface HeaderProps {
+  locale: string;
+}
+
+export default function Header({ locale }: HeaderProps) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [langMenuOpen, setLangMenuOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState("ru");
-
-  useEffect(() => {
-    const savedLang = localStorage.getItem("sen-lang");
-    if (savedLang && ["ru", "kk", "en"].includes(savedLang)) {
-      setCurrentLang(savedLang);
-    }
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,15 +59,7 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const changeLang = (code: string) => {
-    setCurrentLang(code);
-    localStorage.setItem("sen-lang", code);
-    setLangMenuOpen(false);
-    // Dispatch event for other components to listen
-    window.dispatchEvent(new CustomEvent("langChange", { detail: code }));
-  };
-
-  const t = navTranslations[currentLang];
+  const t = navTranslations[locale] || navTranslations.ru;
 
   const navLinks = [
     { name: t.home, href: "#hero" },
@@ -81,7 +70,7 @@ export default function Header() {
     { name: t.contact, href: "#contact" },
   ];
 
-  const currentLangData = languages.find((l) => l.code === currentLang);
+  const currentLangData = languages.find((l) => l.code === locale);
 
   return (
     <motion.header
@@ -94,7 +83,7 @@ export default function Header() {
       )}
     >
       <nav className="max-w-7xl mx-auto px-4 md:px-8 xl:px-0 flex justify-between items-center">
-        <a href="#hero" className="flex items-center group">
+        <Link href={`/${locale}/`} className="flex items-center group">
           <Image
             src="/logo.png"
             alt="SEN Group"
@@ -103,7 +92,7 @@ export default function Header() {
             className="h-10 w-auto brightness-100 group-hover:brightness-110 transition-all duration-300"
             priority
           />
-        </a>
+        </Link>
 
         <ul className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
@@ -147,17 +136,18 @@ export default function Header() {
                 className="absolute right-0 top-full mt-2 glass rounded-xl overflow-hidden min-w-[140px]"
               >
                 {languages.map((lang) => (
-                  <button
+                  <Link
                     key={lang.code}
-                    onClick={() => changeLang(lang.code)}
+                    href={`/${lang.code}/`}
+                    onClick={() => setLangMenuOpen(false)}
                     className={cn(
                       "w-full px-4 py-3 text-left text-sm hover:bg-white/10 transition-colors flex items-center justify-between",
-                      currentLang === lang.code ? "text-primary" : "text-light"
+                      locale === lang.code ? "text-primary" : "text-light"
                     )}
                   >
                     <span>{lang.fullName}</span>
                     <span className="text-xs text-muted">{lang.name}</span>
-                  </button>
+                  </Link>
                 ))}
               </motion.div>
             )}
@@ -213,17 +203,18 @@ export default function Header() {
           className="lg:hidden absolute right-4 top-full mt-2 glass rounded-xl overflow-hidden min-w-[140px] z-50"
         >
           {languages.map((lang) => (
-            <button
+            <Link
               key={lang.code}
-              onClick={() => changeLang(lang.code)}
+              href={`/${lang.code}/`}
+              onClick={() => setLangMenuOpen(false)}
               className={cn(
-                "w-full px-4 py-3 text-left text-sm hover:bg-white/10 transition-colors flex items-center justify-between",
-                currentLang === lang.code ? "text-primary" : "text-light"
+                "block w-full px-4 py-3 text-left text-sm hover:bg-white/10 transition-colors",
+                locale === lang.code ? "text-primary" : "text-light"
               )}
             >
               <span>{lang.fullName}</span>
-              <span className="text-xs text-muted">{lang.name}</span>
-            </button>
+              <span className="text-xs text-muted ml-2">{lang.name}</span>
+            </Link>
           ))}
         </motion.div>
       )}

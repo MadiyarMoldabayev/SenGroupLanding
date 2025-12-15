@@ -148,7 +148,11 @@ const standards = [
   },
 ];
 
-export default function StandardsSection() {
+interface StandardsSectionProps {
+  locale: string;
+}
+
+export default function StandardsSection({ locale }: StandardsSectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [expandedId, setExpandedId] = useState<number | null>(null);
