@@ -3,6 +3,48 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const cubeTranslations = {
+  ru: {
+    badge: "Интерактивная 3D модель",
+    title: "Экосистема",
+    titleHighlight: "SEN",
+    titleSuffix: "в 3D",
+    subtitle: "Нажмите на грань куба, чтобы узнать больше о компании",
+    loading: "Загрузка 3D модели...",
+    company: "КОМПАНИЯ",
+    products: "Продукты:",
+    hover: "Наведите для подсветки",
+    click: "Нажмите для деталей",
+    drag: "Перетащите для вращения",
+  },
+  kk: {
+    badge: "Интерактивті 3D модель",
+    title: "Экожүйе",
+    titleHighlight: "SEN",
+    titleSuffix: "3D-де",
+    subtitle: "Компания туралы көбірек білу үшін кубтың бетін басыңыз",
+    loading: "3D модель жүктелуде...",
+    company: "КОМПАНИЯ",
+    products: "Өнімдер:",
+    hover: "Жарық түсіру үшін меңзеңіз",
+    click: "Мәліметтер үшін басыңыз",
+    drag: "Айналдыру үшін сүйреңіз",
+  },
+  en: {
+    badge: "Interactive 3D Model",
+    title: "Ecosystem",
+    titleHighlight: "SEN",
+    titleSuffix: "in 3D",
+    subtitle: "Click on a cube face to learn more about the company",
+    loading: "Loading 3D model...",
+    company: "COMPANY",
+    products: "Products:",
+    hover: "Hover to highlight",
+    click: "Click for details",
+    drag: "Drag to rotate",
+  },
+};
+
 interface CompanyData {
   name: string;
   desc: string;
@@ -67,6 +109,23 @@ export default function EcosystemCube() {
   const [selectedCompany, setSelectedCompany] = useState<CompanyData | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const sceneRef = useRef<any>(null);
+  const [lang, setLang] = useState("ru");
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("sen-lang");
+    if (savedLang && ["ru", "kk", "en"].includes(savedLang)) {
+      setLang(savedLang);
+    }
+
+    const handleLangChange = (e: CustomEvent) => {
+      setLang(e.detail);
+    };
+
+    window.addEventListener("langChange", handleLangChange as EventListener);
+    return () => window.removeEventListener("langChange", handleLangChange as EventListener);
+  }, []);
+
+  const t = cubeTranslations[lang as keyof typeof cubeTranslations];
 
   useEffect(() => {
     if (typeof window === "undefined" || !containerRef.current) return;
@@ -104,43 +163,51 @@ export default function EcosystemCube() {
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       containerRef.current!.appendChild(renderer.domElement);
 
-      // Lighting
-      const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+      // Lighting - brighter setup
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
       scene.add(ambientLight);
 
-      const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
       dirLight.position.set(5, 10, 7);
       dirLight.castShadow = true;
       scene.add(dirLight);
 
-      const fillLight = new THREE.DirectionalLight(0x5856D6, 0.3);
+      const dirLight2 = new THREE.DirectionalLight(0xffffff, 0.8);
+      dirLight2.position.set(-5, 5, -5);
+      scene.add(dirLight2);
+
+      const fillLight = new THREE.DirectionalLight(0x5856D6, 0.5);
       fillLight.position.set(-5, 0, -5);
       scene.add(fillLight);
 
-      const accentLight = new THREE.PointLight(0x00D4AA, 0.5, 20);
+      const accentLight = new THREE.PointLight(0x00D4AA, 0.8, 20);
       accentLight.position.set(0, 5, 0);
       scene.add(accentLight);
 
+      const backLight = new THREE.PointLight(0x0A84FF, 0.6, 20);
+      backLight.position.set(0, -5, 0);
+      scene.add(backLight);
+
       // Create text texture
-      function createTextTexture(text: string, bgColor: string = "#0D1117", textColor: string = "#ffffff") {
+      function createTextTexture(text: string, bgColor: string = "#1a2540", textColor: string = "#ffffff") {
         const canvas = document.createElement("canvas");
         canvas.width = 512;
         canvas.height = 512;
         const ctx = canvas.getContext("2d")!;
 
-        // Gradient background
+        // Gradient background - brighter
         const gradient = ctx.createLinearGradient(0, 0, 512, 512);
         gradient.addColorStop(0, bgColor);
-        gradient.addColorStop(1, "#1a1a2e");
+        gradient.addColorStop(1, "#2a3555");
         ctx.fillStyle = gradient;
         ctx.fillRect(0, 0, 512, 512);
 
-        // Border glow effect
+        // Border glow effect - brighter
         ctx.shadowColor = CONFIG.primaryColor;
-        ctx.shadowBlur = 20;
+        ctx.shadowBlur = 30;
         ctx.strokeStyle = CONFIG.primaryColor;
-        ctx.lineWidth = 4;
-        ctx.strokeRect(10, 10, 492, 492);
+        ctx.lineWidth = 6;
+        ctx.strokeRect(8, 8, 496, 496);
         ctx.shadowBlur = 0;
 
         // Auto-size text
@@ -229,21 +296,21 @@ export default function EcosystemCube() {
             let material;
 
             if (companyName) {
-              const textMap = createTextTexture(companyName, "#0D1117", "#ffffff");
+              const textMap = createTextTexture(companyName, "#1a2540", "#ffffff");
               material = new THREE.MeshStandardMaterial({
                 map: textMap,
-                roughness: 0.4,
-                metalness: 0.1,
+                roughness: 0.3,
+                metalness: 0.15,
                 emissive: new THREE.Color(faceColor),
-                emissiveIntensity: 0.1,
+                emissiveIntensity: 0.25,
               });
             } else {
               material = new THREE.MeshStandardMaterial({
-                color: 0x1a1a2e,
-                roughness: 0.6,
-                metalness: 0.2,
+                color: 0x2a3555,
+                roughness: 0.4,
+                metalness: 0.15,
                 transparent: true,
-                opacity: 0.8,
+                opacity: 0.9,
               });
             }
 
@@ -410,7 +477,7 @@ export default function EcosystemCube() {
   };
 
   return (
-    <section className="py-24 md:py-32 relative">
+    <section className="py-24 md:py-32 relative" id="cube3d">
       <div className="max-w-7xl mx-auto px-4 md:px-8 xl:px-0">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -419,13 +486,13 @@ export default function EcosystemCube() {
           className="text-center mb-12"
         >
           <span className="inline-block px-4 py-2 rounded-full glass text-sm text-primary mb-6">
-            Интерактивная 3D модель
+            {t.badge}
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">
-            Экосистема <span className="gradient-text">SEN</span> в 3D
+            {t.title} <span className="gradient-text">{t.titleHighlight}</span> {t.titleSuffix}
           </h2>
           <p className="text-muted text-lg md:text-xl max-w-3xl mx-auto">
-            Нажмите на грань куба, чтобы узнать больше о компании
+            {t.subtitle}
           </p>
         </motion.div>
 
@@ -446,7 +513,7 @@ export default function EcosystemCube() {
               >
                 <div className="text-center">
                   <div className="w-12 h-12 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                  <p className="text-muted">Загрузка 3D модели...</p>
+                  <p className="text-muted">{t.loading}</p>
                 </div>
               </motion.div>
             )}
@@ -472,7 +539,7 @@ export default function EcosystemCube() {
                 </button>
 
                 <span className="inline-block px-3 py-1 rounded-full bg-primary/20 text-primary text-xs font-semibold mb-4">
-                  КОМПАНИЯ
+                  {t.company}
                 </span>
 
                 <h3 className="text-xl md:text-2xl font-bold text-white mb-3">
@@ -482,7 +549,7 @@ export default function EcosystemCube() {
                 <p className="text-muted text-sm mb-6">{selectedCompany.desc}</p>
 
                 <div className="space-y-3">
-                  <h4 className="text-sm font-semibold text-light">Продукты:</h4>
+                  <h4 className="text-sm font-semibold text-light">{t.products}</h4>
                   {selectedCompany.products.slice(0, 4).map((product, i) => (
                     <div key={i} className="flex items-start gap-2">
                       <div className="w-1.5 h-1.5 rounded-full bg-accent mt-2 shrink-0" />
@@ -509,20 +576,20 @@ export default function EcosystemCube() {
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
             </svg>
-            <span>Наведите для подсветки</span>
+            <span>{t.hover}</span>
           </div>
           <div className="flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
             </svg>
-            <span>Нажмите для деталей</span>
+            <span>{t.click}</span>
           </div>
           <div className="flex items-center gap-2">
             <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
-            <span>Перетащите для вращения</span>
+            <span>{t.drag}</span>
           </div>
         </motion.div>
       </div>

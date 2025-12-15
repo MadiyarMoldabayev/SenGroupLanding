@@ -1,8 +1,54 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
+const heroTranslations = {
+  ru: {
+    badge: "Экосистема технологий и доверия",
+    title1: "Ценности и стандарты",
+    title2: "SEN Group",
+    description: "Мы создаём технологии и сервисы, которые укрепляют доверие — внутри организаций, между командами, партнёрами и обществом.",
+    cta1: "Узнать больше",
+    cta2: "Наша экосистема",
+  },
+  kk: {
+    badge: "Технология және сенім экожүйесі",
+    title1: "Құндылықтар мен стандарттар",
+    title2: "SEN Group",
+    description: "Біз ұйымдар ішінде, командалар, серіктестер және қоғам арасында сенімді нығайтатын технологиялар мен қызметтерді құрамыз.",
+    cta1: "Көбірек білу",
+    cta2: "Біздің экожүйе",
+  },
+  en: {
+    badge: "Ecosystem of Technology and Trust",
+    title1: "Values and Standards",
+    title2: "SEN Group",
+    description: "We create technologies and services that strengthen trust — within organizations, between teams, partners, and society.",
+    cta1: "Learn More",
+    cta2: "Our Ecosystem",
+  },
+};
+
 export default function HeroSection() {
+  const [lang, setLang] = useState("ru");
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("sen-lang");
+    if (savedLang && ["ru", "kk", "en"].includes(savedLang)) {
+      setLang(savedLang);
+    }
+
+    const handleLangChange = (e: CustomEvent) => {
+      setLang(e.detail);
+    };
+
+    window.addEventListener("langChange", handleLangChange as EventListener);
+    return () => window.removeEventListener("langChange", handleLangChange as EventListener);
+  }, []);
+
+  const t = heroTranslations[lang as keyof typeof heroTranslations];
+
   return (
     <section
       id="hero"
@@ -37,7 +83,7 @@ export default function HeroSection() {
         >
           <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-muted">
             <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-            Экосистема технологий и доверия
+            {t.badge}
           </span>
         </motion.div>
 
@@ -47,9 +93,9 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-[1.1] mb-8"
         >
-          <span className="text-white">Ценности и стандарты</span>
+          <span className="text-white">{t.title1}</span>
           <br />
-          <span className="gradient-text">SEN Group</span>
+          <span className="gradient-text">{t.title2}</span>
         </motion.h1>
 
         <motion.p
@@ -58,8 +104,7 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-lg md:text-xl lg:text-2xl text-muted max-w-4xl mx-auto mb-12 leading-relaxed"
         >
-          Мы создаём технологии и сервисы, которые укрепляют доверие — внутри
-          организаций, между командами, партнёрами и обществом.
+          {t.description}
         </motion.p>
 
         <motion.div
@@ -69,10 +114,10 @@ export default function HeroSection() {
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
         >
           <a href="#values" className="btn-primary text-base">
-            Узнать больше
+            {t.cta1}
           </a>
           <a href="#ecosystem" className="btn-secondary text-base">
-            Наша экосистема
+            {t.cta2}
           </a>
         </motion.div>
       </div>
@@ -99,4 +144,3 @@ export default function HeroSection() {
     </section>
   );
 }
-

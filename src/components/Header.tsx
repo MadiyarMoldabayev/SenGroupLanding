@@ -5,9 +5,54 @@ import { motion } from "framer-motion";
 import cn from "classnames";
 import Image from "next/image";
 
+const languages = [
+  { code: "ru", name: "RU", fullName: "Русский" },
+  { code: "kk", name: "KZ", fullName: "Қазақша" },
+  { code: "en", name: "EN", fullName: "English" },
+];
+
+const navTranslations: { [key: string]: { [key: string]: string } } = {
+  ru: {
+    home: "Главная",
+    values: "Ценности",
+    ecosystem: "Экосистема",
+    standards: "Стандарты",
+    team: "Команда",
+    contact: "Контакты",
+    cta: "Связаться с нами",
+  },
+  kk: {
+    home: "Басты бет",
+    values: "Құндылықтар",
+    ecosystem: "Экожүйе",
+    standards: "Стандарттар",
+    team: "Команда",
+    contact: "Байланыс",
+    cta: "Бізбен байланысу",
+  },
+  en: {
+    home: "Home",
+    values: "Values",
+    ecosystem: "Ecosystem",
+    standards: "Standards",
+    team: "Team",
+    contact: "Contact",
+    cta: "Contact Us",
+  },
+};
+
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const [currentLang, setCurrentLang] = useState("ru");
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("sen-lang");
+    if (savedLang && ["ru", "kk", "en"].includes(savedLang)) {
+      setCurrentLang(savedLang);
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,13 +62,26 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const changeLang = (code: string) => {
+    setCurrentLang(code);
+    localStorage.setItem("sen-lang", code);
+    setLangMenuOpen(false);
+    // Dispatch event for other components to listen
+    window.dispatchEvent(new CustomEvent("langChange", { detail: code }));
+  };
+
+  const t = navTranslations[currentLang];
+
   const navLinks = [
-    { name: "Главная", href: "#hero" },
-    { name: "Ценности", href: "#values" },
-    { name: "Экосистема", href: "#ecosystem" },
-    { name: "Стандарты", href: "#standards" },
-    { name: "Контакты", href: "#contact" },
+    { name: t.home, href: "#hero" },
+    { name: t.values, href: "#values" },
+    { name: t.ecosystem, href: "#ecosystem" },
+    { name: t.standards, href: "#standards" },
+    { name: t.team, href: "#team" },
+    { name: t.contact, href: "#contact" },
   ];
+
+  const currentLangData = languages.find((l) => l.code === currentLang);
 
   return (
     <motion.header
@@ -47,9 +105,9 @@ export default function Header() {
           />
         </a>
 
-        <ul className="hidden lg:flex items-center gap-10">
+        <ul className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
-            <li key={link.name}>
+            <li key={link.href}>
               <a
                 href={link.href}
                 className="text-muted hover:text-white transition-colors duration-300 text-sm font-medium"
@@ -61,36 +119,114 @@ export default function Header() {
         </ul>
 
         <div className="hidden lg:flex items-center gap-4">
+          {/* Language Switcher */}
+          <div className="relative">
+            <button
+              onClick={() => setLangMenuOpen(!langMenuOpen)}
+              className="flex items-center gap-2 px-3 py-2 rounded-lg glass hover:bg-white/10 transition-colors text-sm font-medium text-light"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9" />
+              </svg>
+              {currentLangData?.name}
+              <svg
+                className={cn("w-3 h-3 transition-transform", langMenuOpen && "rotate-180")}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {langMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="absolute right-0 top-full mt-2 glass rounded-xl overflow-hidden min-w-[140px]"
+              >
+                {languages.map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => changeLang(lang.code)}
+                    className={cn(
+                      "w-full px-4 py-3 text-left text-sm hover:bg-white/10 transition-colors flex items-center justify-between",
+                      currentLang === lang.code ? "text-primary" : "text-light"
+                    )}
+                  >
+                    <span>{lang.fullName}</span>
+                    <span className="text-xs text-muted">{lang.name}</span>
+                  </button>
+                ))}
+              </motion.div>
+            )}
+          </div>
+
           <a href="#contact" className="btn-primary text-sm">
-            Связаться с нами
+            {t.cta}
           </a>
         </div>
 
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="lg:hidden w-10 h-10 flex flex-col justify-center items-center gap-1.5 group"
-          aria-label="Menu"
-        >
-          <span
-            className={cn(
-              "w-6 h-0.5 bg-white transition-all duration-300",
-              menuOpen && "rotate-45 translate-y-2"
-            )}
-          />
-          <span
-            className={cn(
-              "w-6 h-0.5 bg-white transition-all duration-300",
-              menuOpen && "opacity-0"
-            )}
-          />
-          <span
-            className={cn(
-              "w-6 h-0.5 bg-white transition-all duration-300",
-              menuOpen && "-rotate-45 -translate-y-2"
-            )}
-          />
-        </button>
+        {/* Mobile controls */}
+        <div className="flex lg:hidden items-center gap-3">
+          {/* Mobile Language Switcher */}
+          <button
+            onClick={() => setLangMenuOpen(!langMenuOpen)}
+            className="px-3 py-2 rounded-lg glass text-sm font-medium text-light"
+          >
+            {currentLangData?.name}
+          </button>
+
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="w-10 h-10 flex flex-col justify-center items-center gap-1.5 group"
+            aria-label="Menu"
+          >
+            <span
+              className={cn(
+                "w-6 h-0.5 bg-white transition-all duration-300",
+                menuOpen && "rotate-45 translate-y-2"
+              )}
+            />
+            <span
+              className={cn(
+                "w-6 h-0.5 bg-white transition-all duration-300",
+                menuOpen && "opacity-0"
+              )}
+            />
+            <span
+              className={cn(
+                "w-6 h-0.5 bg-white transition-all duration-300",
+                menuOpen && "-rotate-45 -translate-y-2"
+              )}
+            />
+          </button>
+        </div>
       </nav>
+
+      {/* Mobile Language Menu */}
+      {langMenuOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="lg:hidden absolute right-4 top-full mt-2 glass rounded-xl overflow-hidden min-w-[140px] z-50"
+        >
+          {languages.map((lang) => (
+            <button
+              key={lang.code}
+              onClick={() => changeLang(lang.code)}
+              className={cn(
+                "w-full px-4 py-3 text-left text-sm hover:bg-white/10 transition-colors flex items-center justify-between",
+                currentLang === lang.code ? "text-primary" : "text-light"
+              )}
+            >
+              <span>{lang.fullName}</span>
+              <span className="text-xs text-muted">{lang.name}</span>
+            </button>
+          ))}
+        </motion.div>
+      )}
 
       {/* Mobile Menu */}
       <motion.div
@@ -102,7 +238,7 @@ export default function Header() {
         <div className="p-6 flex flex-col gap-4">
           {navLinks.map((link) => (
             <a
-              key={link.name}
+              key={link.href}
               href={link.href}
               onClick={() => setMenuOpen(false)}
               className="text-light hover:text-primary transition-colors duration-300 text-lg font-medium py-2"
@@ -111,11 +247,10 @@ export default function Header() {
             </a>
           ))}
           <a href="#contact" className="btn-primary text-center mt-4">
-            Связаться с нами
+            {t.cta}
           </a>
         </div>
       </motion.div>
     </motion.header>
   );
 }
-
