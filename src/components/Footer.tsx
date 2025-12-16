@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const ecosystemCompanies = [
   "SENDIGITAL",
-  "SENTECHAUDIT",
+  "SENAUDIT",
   "SENFINANCE",
   "SENCONSULTING",
   "SENGROUP",

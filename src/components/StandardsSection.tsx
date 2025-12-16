@@ -45,7 +45,7 @@ const standards = [
     id: 3,
     title: "Управление качеством в каждом направлении",
     description:
-      "Все компании экосистемы SEN — SenDigital, SenTechAudit, SenFinance и др. — работают по принципам:",
+      "Все компании экосистемы SEN — SenDigital, SenAudit, SenFinance и др. — работают по принципам:",
     points: [
       "Многоуровневого контроля качества",
       "Проверяемости решений",
