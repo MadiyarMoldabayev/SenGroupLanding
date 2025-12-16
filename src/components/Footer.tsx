@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 const ecosystemCompanies = [
-  "SENDIGITAL",
-  "SENAUDIT",
-  "SENFINANCE",
-  "SENCONSULTING",
-  "SENGROUP",
+  "SEN DIGITAL",
+  "SEN AUDIT",
+  "SEN FINANCE",
+  "SEN CONSULTING",
+  "SEN GROUP",
   "SEN FOUNDATION HUB",
 ];
 
@@ -111,7 +111,7 @@ export default function Footer({ locale }: FooterProps) {
             <span className="text-accent">Данные</span> +{" "}
             <span className="text-orange-400">Люди</span> +{" "}
             <span className="text-pink-400">Инновации</span> +{" "}
-            <span className="text-cyan-400">Инвестиции</span> ={" "}
+            <span className="text-cyan-400">Ответственность</span> ={" "}
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-medium">
               Экосистема доверия будущего
             </span>

@@ -10,7 +10,7 @@ const formulaParts = [
   { text: "Данные", color: "from-accent to-emerald-400" },
   { text: "Люди", color: "from-orange-500 to-amber-400" },
   { text: "Инновации", color: "from-pink-500 to-rose-400" },
-  { text: "Инвестиции", color: "from-cyan-500 to-teal-400" },
+  { text: "Ответственность", color: "from-cyan-500 to-teal-400" },
 ];
 
 interface FormulaSectionProps {
