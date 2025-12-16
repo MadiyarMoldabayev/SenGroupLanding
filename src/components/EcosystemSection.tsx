@@ -56,7 +56,7 @@ const companies = [
     color: "from-pink-500 to-rose-400",
   },
   {
-    name: "FOUNDATION HUB",
+    name: "SEN FOUNDATION HUB",
     description: "Социальный эффект и прозрачность",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -93,7 +93,7 @@ const COMPANIES_DATA: CompaniesDataMap = {
     ],
   },
   bottom: {
-    name: "FOUNDATION HUB",
+    name: "SEN FOUNDATION HUB",
     desc: "Хаб фонда и социальных инициатив",
     products: [
       { name: "Портал фонда", desc: "Официальный портал фонда" },

@@ -65,10 +65,10 @@ const teamMembers: TeamMember[] = [
   {
     id: 7,
     image: "/team/new-7.jpeg",
-    name: { en: "Gulsina Kadyrbekkyzy", kk: "Гүлсіна Қадырбекқызы", ru: "Гульсина Кадырбеккызы" },
-    role: { en: "Project Manager", kk: "Жоба менеджері", ru: "Менеджер проектов" },
-    expertise: { en: "Project management, coordination, planning", kk: "Жобаларды басқару, үйлестіру, жоспарлау", ru: "Управление проектами, координация, планирование" },
-    experience: { en: "4+ years of project management experience", kk: "Жобаларды басқаруда 4 жылдан аса тәжірибе", ru: "+4 года управления проектами" },
+    name: { en: "Gulsina Kadyrbekkyzy", kk: "Гүлсіна Қадырбекқызы", ru: "Қадырбекқызы Гульсина" },
+    role: { en: "Lawyer", kk: "Заңгер", ru: "Юрист" },
+    expertise: { en: "Contract law, civil law, corporate law, IT sphere and intellectual property", kk: "Келісімшарт құқығы, азаматтық құқық, корпоративтік құқық, IT саласы және интеллектуалды меншік", ru: "Договорное право, гражданское право, корпоративное право, IT сфера и интеллектуальная собственность" },
+    experience: { en: "More than 12 years of experience", kk: "12 жылдан аса тәжірибе", ru: "Более 12 лет опыта" },
   },
 ];
 

@@ -9,7 +9,7 @@ const ecosystemCompanies = [
   "SENFINANCE",
   "SENCONSULTING",
   "SENGROUP",
-  "FOUNDATION HUB",
+  "SEN FOUNDATION HUB",
 ];
 
 const navigation = [

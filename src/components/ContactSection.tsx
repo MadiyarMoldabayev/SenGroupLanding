@@ -131,7 +131,7 @@ export default function ContactSection({ locale }: ContactSectionProps) {
                         setFormState({ ...formState, name: e.target.value })
                       }
                       className="w-full px-4 py-3 bg-dark/50 border border-border rounded-xl text-white placeholder-muted focus:outline-none focus:border-primary transition-colors"
-                      placeholder="Иван Иванов"
+                      placeholder="Сегизбай Айман"
                     />
                   </div>
                   <div>
