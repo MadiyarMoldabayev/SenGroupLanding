@@ -4,14 +4,44 @@ import { motion } from "framer-motion";
 import { useInView } from "framer-motion";
 import { useRef } from "react";
 
-const formulaParts = [
-  { text: "Честность", color: "from-primary to-blue-400" },
-  { text: "Технологии", color: "from-secondary to-purple-400" },
-  { text: "Данные", color: "from-accent to-emerald-400" },
-  { text: "Люди", color: "from-orange-500 to-amber-400" },
-  { text: "Инновации", color: "from-pink-500 to-rose-400" },
-  { text: "Ответственность", color: "from-cyan-500 to-teal-400" },
-];
+const formulaTranslations = {
+  ru: {
+    badge: "Формула культуры SEN",
+    formulaParts: [
+      { text: "Честность", color: "from-primary to-blue-400" },
+      { text: "Технологии", color: "from-secondary to-purple-400" },
+      { text: "Данные", color: "from-accent to-emerald-400" },
+      { text: "Люди", color: "from-orange-500 to-amber-400" },
+      { text: "Инновации", color: "from-pink-500 to-rose-400" },
+      { text: "Ответственность", color: "from-cyan-500 to-teal-400" },
+    ],
+    result: "Экосистема доверия будущего",
+  },
+  kk: {
+    badge: "SEN мәдениетінің формуласы",
+    formulaParts: [
+      { text: "Адалдық", color: "from-primary to-blue-400" },
+      { text: "Технологиялар", color: "from-secondary to-purple-400" },
+      { text: "Деректер", color: "from-accent to-emerald-400" },
+      { text: "Адамдар", color: "from-orange-500 to-amber-400" },
+      { text: "Инновациялар", color: "from-pink-500 to-rose-400" },
+      { text: "Жауапкершілік", color: "from-cyan-500 to-teal-400" },
+    ],
+    result: "Болашақ сенім экожүйесі",
+  },
+  en: {
+    badge: "SEN Culture Formula",
+    formulaParts: [
+      { text: "Honesty", color: "from-primary to-blue-400" },
+      { text: "Technology", color: "from-secondary to-purple-400" },
+      { text: "Data", color: "from-accent to-emerald-400" },
+      { text: "People", color: "from-orange-500 to-amber-400" },
+      { text: "Innovation", color: "from-pink-500 to-rose-400" },
+      { text: "Responsibility", color: "from-cyan-500 to-teal-400" },
+    ],
+    result: "Ecosystem of Trust for the Future",
+  },
+};
 
 interface FormulaSectionProps {
   locale: string;
@@ -20,6 +50,7 @@ interface FormulaSectionProps {
 export default function FormulaSection({ locale }: FormulaSectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const t = formulaTranslations[locale as keyof typeof formulaTranslations] || formulaTranslations.ru;
 
   return (
     <section className="py-24 md:py-32 relative" ref={ref}>
@@ -34,12 +65,12 @@ export default function FormulaSection({ locale }: FormulaSectionProps) {
           className="text-center"
         >
           <span className="inline-block px-4 py-2 rounded-full glass text-sm text-accent mb-8">
-            Формула культуры SEN
+            {t.badge}
           </span>
 
           {/* Formula */}
           <div className="flex flex-wrap justify-center items-center gap-3 md:gap-4 mb-12">
-            {formulaParts.map((part, index) => (
+            {t.formulaParts.map((part, index) => (
               <motion.div
                 key={part.text}
                 initial={{ opacity: 0, scale: 0.8 }}
@@ -52,7 +83,7 @@ export default function FormulaSection({ locale }: FormulaSectionProps) {
                 >
                   {part.text}
                 </span>
-                {index < formulaParts.length - 1 && (
+                {index < t.formulaParts.length - 1 && (
                   <span className="text-2xl md:text-3xl text-muted font-light">
                     +
                   </span>
@@ -81,7 +112,7 @@ export default function FormulaSection({ locale }: FormulaSectionProps) {
             <div className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent blur-3xl opacity-20" />
             <h2 className="relative text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">
               <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
-                Экосистема доверия будущего
+                {t.result}
               </span>
             </h2>
           </motion.div>
@@ -93,7 +124,7 @@ export default function FormulaSection({ locale }: FormulaSectionProps) {
             transition={{ duration: 1, delay: 1.2 }}
             className="mt-16 flex justify-center gap-8"
           >
-            {formulaParts.map((part, i) => (
+            {t.formulaParts.map((part, i) => (
               <motion.div
                 key={i}
                 animate={{ y: [0, -10, 0] }}
@@ -111,4 +142,3 @@ export default function FormulaSection({ locale }: FormulaSectionProps) {
     </section>
   );
 }
-

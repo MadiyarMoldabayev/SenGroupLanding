@@ -8,6 +8,90 @@ interface ContactSectionProps {
   locale: string;
 }
 
+const contactTranslations = {
+  ru: {
+    badge: "Связаться с нами",
+    title: "Начните работать с",
+    subtitle: "Мы готовы обсудить ваш проект и предложить оптимальные решения",
+    submittedTitle: "Спасибо за обращение!",
+    submittedText: "Мы свяжемся с вами в ближайшее время",
+    submitAgain: "Отправить ещё",
+    nameLabel: "Ваше имя *",
+    emailLabel: "Email *",
+    companyLabel: "Компания",
+    messageLabel: "Сообщение *",
+    namePlaceholder: "Сегизбай Айман",
+    emailPlaceholder: "aiman@company.com",
+    companyPlaceholder: "ТОО 'Company'",
+    messagePlaceholder: "Расскажите о вашем проекте...",
+    submitting: "Отправка...",
+    submit: "Отправить сообщение",
+    contactInfo: "Контактная информация",
+    socialNetworks: "Социальные сети",
+    languages: "Мы работаем на русском, казахском и английском языках",
+    contactInfoItems: [
+      { title: "Адрес", value: "Казахстан, г. Астана" },
+      { title: "Email", value: "info@sengroup.one", href: "mailto:info@sengroup.one" },
+      { title: "Телефон", value: "+7 (778) 625-19-24", href: "tel:+77786251924" },
+      { title: "Режим работы", value: "Пн-Пт: 10:00 - 19:00" },
+    ],
+  },
+  kk: {
+    badge: "Бізбен байланысу",
+    title: "Жұмысты бастаңыз",
+    subtitle: "Біз сіздің жобаңызды талқылауға және оңтайлы шешімдер ұсынуға дайынбыз",
+    submittedTitle: "Хабарласқаныңызға рахмет!",
+    submittedText: "Біз жақын арада сізбен байланысамыз",
+    submitAgain: "Тағы жіберу",
+    nameLabel: "Атыңыз *",
+    emailLabel: "Email *",
+    companyLabel: "Компания",
+    messageLabel: "Хабарлама *",
+    namePlaceholder: "Сегізбай Айман",
+    emailPlaceholder: "aiman@company.com",
+    companyPlaceholder: "ЖШС 'Company'",
+    messagePlaceholder: "Жобаңыз туралы айтыңыз...",
+    submitting: "Жіберілуде...",
+    submit: "Хабарлама жіберу",
+    contactInfo: "Байланыс ақпараты",
+    socialNetworks: "Әлеуметтік желілер",
+    languages: "Біз орыс, қазақ және ағылшын тілдерінде жұмыс істейміз",
+    contactInfoItems: [
+      { title: "Мекен-жай", value: "Қазақстан, Астана қ." },
+      { title: "Email", value: "info@sengroup.one", href: "mailto:info@sengroup.one" },
+      { title: "Телефон", value: "+7 (778) 625-19-24", href: "tel:+77786251924" },
+      { title: "Жұмыс режимі", value: "Дүйсенбі-Жұма: 10:00 - 19:00" },
+    ],
+  },
+  en: {
+    badge: "Contact Us",
+    title: "Start working with",
+    subtitle: "We are ready to discuss your project and offer optimal solutions",
+    submittedTitle: "Thank you for contacting us!",
+    submittedText: "We will contact you shortly",
+    submitAgain: "Send again",
+    nameLabel: "Your name *",
+    emailLabel: "Email *",
+    companyLabel: "Company",
+    messageLabel: "Message *",
+    namePlaceholder: "Aiman Segizbay",
+    emailPlaceholder: "aiman@company.com",
+    companyPlaceholder: "LLP 'Company'",
+    messagePlaceholder: "Tell us about your project...",
+    submitting: "Sending...",
+    submit: "Send message",
+    contactInfo: "Contact Information",
+    socialNetworks: "Social Networks",
+    languages: "We work in Russian, Kazakh and English",
+    contactInfoItems: [
+      { title: "Address", value: "Kazakhstan, Astana" },
+      { title: "Email", value: "info@sengroup.one", href: "mailto:info@sengroup.one" },
+      { title: "Phone", value: "+7 (778) 625-19-24", href: "tel:+77786251924" },
+      { title: "Working hours", value: "Mon-Fri: 10:00 - 19:00" },
+    ],
+  },
+};
+
 export default function ContactSection({ locale }: ContactSectionProps) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -19,6 +103,7 @@ export default function ContactSection({ locale }: ContactSectionProps) {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const t = contactTranslations[locale as keyof typeof contactTranslations] || contactTranslations.ru;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,46 +115,20 @@ export default function ContactSection({ locale }: ContactSectionProps) {
     setFormState({ name: "", email: "", company: "", message: "" });
   };
 
-  const contactInfo = [
-    {
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-      ),
-      title: "Адрес",
-      value: "Казахстан, г. Астана",
-    },
-    {
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-        </svg>
-      ),
-      title: "Email",
-      value: "info@sengroup.one",
-      href: "mailto:info@sengroup.one",
-    },
-    {
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-        </svg>
-      ),
-      title: "Телефон",
-      value: "+7 (778) 625-19-24",
-      href: "tel:+77786251924",
-    },
-    {
-      icon: (
-        <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-      ),
-      title: "Режим работы",
-      value: "Пн-Пт: 10:00 - 19:00",
-    },
+  const contactInfoIcons = [
+    <svg key="1" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>,
+    <svg key="2" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    </svg>,
+    <svg key="3" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+    </svg>,
+    <svg key="4" className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>,
   ];
 
   return (
@@ -82,14 +141,14 @@ export default function ContactSection({ locale }: ContactSectionProps) {
           className="text-center mb-16"
         >
           <span className="inline-block px-4 py-2 rounded-full glass text-sm text-primary mb-6">
-            Связаться с нами
+            {t.badge}
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">
-            Начните работать с{" "}
+            {t.title}{" "}
             <span className="gradient-text">SENGROUP</span>
           </h2>
           <p className="text-muted text-lg md:text-xl max-w-3xl mx-auto">
-            Мы готовы обсудить ваш проект и предложить оптимальные решения
+            {t.subtitle}
           </p>
         </motion.div>
 
@@ -104,16 +163,16 @@ export default function ContactSection({ locale }: ContactSectionProps) {
             {isSubmitted ? (
               <div className="h-full flex flex-col items-center justify-center text-center py-12">
                 <h3 className="text-2xl font-bold text-white mb-2">
-                  Спасибо за обращение!
+                  {t.submittedTitle}
                 </h3>
                 <p className="text-muted mb-6">
-                  Мы свяжемся с вами в ближайшее время
+                  {t.submittedText}
                 </p>
                 <button
                   onClick={() => setIsSubmitted(false)}
                   className="btn-secondary text-sm"
                 >
-                  Отправить ещё
+                  {t.submitAgain}
                 </button>
               </div>
             ) : (
@@ -121,7 +180,7 @@ export default function ContactSection({ locale }: ContactSectionProps) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-light mb-2">
-                      Ваше имя *
+                      {t.nameLabel}
                     </label>
                     <input
                       type="text"
@@ -131,12 +190,12 @@ export default function ContactSection({ locale }: ContactSectionProps) {
                         setFormState({ ...formState, name: e.target.value })
                       }
                       className="w-full px-4 py-3 bg-dark/50 border border-border rounded-xl text-white placeholder-muted focus:outline-none focus:border-primary transition-colors"
-                      placeholder="Сегизбай Айман"
+                      placeholder={t.namePlaceholder}
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-light mb-2">
-                      Email *
+                      {t.emailLabel}
                     </label>
                     <input
                       type="email"
@@ -146,13 +205,13 @@ export default function ContactSection({ locale }: ContactSectionProps) {
                         setFormState({ ...formState, email: e.target.value })
                       }
                       className="w-full px-4 py-3 bg-dark/50 border border-border rounded-xl text-white placeholder-muted focus:outline-none focus:border-primary transition-colors"
-                      placeholder="aiman@company.com"
+                      placeholder={t.emailPlaceholder}
                     />
                   </div>
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-light mb-2">
-                    Компания
+                    {t.companyLabel}
                   </label>
                   <input
                     type="text"
@@ -161,12 +220,12 @@ export default function ContactSection({ locale }: ContactSectionProps) {
                       setFormState({ ...formState, company: e.target.value })
                     }
                     className="w-full px-4 py-3 bg-dark/50 border border-border rounded-xl text-white placeholder-muted focus:outline-none focus:border-primary transition-colors"
-                    placeholder="ТОО 'Company'"
+                    placeholder={t.companyPlaceholder}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-light mb-2">
-                    Сообщение *
+                    {t.messageLabel}
                   </label>
                   <textarea
                     required
@@ -176,7 +235,7 @@ export default function ContactSection({ locale }: ContactSectionProps) {
                       setFormState({ ...formState, message: e.target.value })
                     }
                     className="w-full px-4 py-3 bg-dark/50 border border-border rounded-xl text-white placeholder-muted focus:outline-none focus:border-primary transition-colors resize-none"
-                    placeholder="Расскажите о вашем проекте..."
+                    placeholder={t.messagePlaceholder}
                   />
                 </div>
                 <button
@@ -205,11 +264,11 @@ export default function ContactSection({ locale }: ContactSectionProps) {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         />
                       </svg>
-                      Отправка...
+                      {t.submitting}
                     </>
                   ) : (
                     <>
-                      Отправить сообщение
+                      {t.submit}
                       <svg
                         className="w-5 h-5"
                         fill="none"
@@ -239,13 +298,13 @@ export default function ContactSection({ locale }: ContactSectionProps) {
           >
             <div className="glass rounded-3xl p-8">
               <h3 className="text-xl font-bold text-white mb-6">
-                Контактная информация
+                {t.contactInfo}
               </h3>
               <div className="space-y-6">
-                {contactInfo.map((item, index) => (
+                {t.contactInfoItems.map((item, index) => (
                   <div key={index} className="flex items-start gap-4">
                     <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-primary/20 to-secondary/20 flex items-center justify-center text-primary shrink-0">
-                      {item.icon}
+                      {contactInfoIcons[index]}
                     </div>
                     <div>
                       <p className="text-sm text-muted mb-1">{item.title}</p>
@@ -268,7 +327,7 @@ export default function ContactSection({ locale }: ContactSectionProps) {
             {/* Quick Links */}
             <div className="glass rounded-3xl p-8">
               <h3 className="text-xl font-bold text-white mb-6">
-                Социальные сети
+                {t.socialNetworks}
               </h3>
               <div className="flex flex-wrap gap-3">
                 {[
@@ -309,7 +368,7 @@ export default function ContactSection({ locale }: ContactSectionProps) {
             <div className="flex items-center gap-3 p-4 glass rounded-xl">
               <div className="w-3 h-3 bg-accent rounded-full animate-pulse" />
               <p className="text-sm text-muted">
-                Мы работаем на русском, казахском и английском языках
+                {t.languages}
               </p>
             </div>
           </motion.div>

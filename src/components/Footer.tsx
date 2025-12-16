@@ -3,22 +3,86 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-const ecosystemCompanies = [
-  "SEN DIGITAL",
-  "SEN AUDIT",
-  "SEN FINANCE",
-  "SEN CONSULTING",
-  "SEN GROUP",
-  "SEN FOUNDATION HUB",
-];
-
-const navigation = [
-  { name: "Главная", href: "#hero" },
-  { name: "Ценности", href: "#values" },
-  { name: "Экосистема", href: "#ecosystem" },
-  { name: "Стандарты", href: "#standards" },
-  { name: "Контакты", href: "#contact" },
-];
+const footerTranslations = {
+  ru: {
+    description: "Экосистема доверия и управления будущего. Мы создаём технологии и сервисы, которые укрепляют доверие — внутри организаций, между командами, партнёрами и обществом.",
+    tags: ["Технологии", "Финтех", "Консалтинг"],
+    navigation: "Навигация",
+    ecosystem: "Экосистема",
+    formula: {
+      honesty: "Честность",
+      technology: "Технологии",
+      data: "Данные",
+      people: "Люди",
+      innovation: "Инновации",
+      responsibility: "Ответственность",
+      result: "Экосистема доверия будущего",
+    },
+    copyright: "Все права защищены.",
+    privacy: "Политика конфиденциальности",
+    terms: "Условия использования",
+    companies: ["SENDIGITAL", "SENAUDIT", "SENFINANCE", "SENCONSULTING", "SENGROUP", "SEN FOUNDATION HUB"],
+    navLinks: [
+      { name: "Главная", href: "#hero" },
+      { name: "Ценности", href: "#values" },
+      { name: "Экосистема", href: "#ecosystem" },
+      { name: "Стандарты", href: "#standards" },
+      { name: "Контакты", href: "#contact" },
+    ],
+  },
+  kk: {
+    description: "Болашақ сенім және басқару экожүйесі. Біз ұйымдар ішінде, командалар, серіктестер және қоғам арасында сенімді нығайтатын технологиялар мен қызметтерді құрамыз.",
+    tags: ["Технологиялар", "Финтех", "Консалтинг"],
+    navigation: "Навигация",
+    ecosystem: "Экожүйе",
+    formula: {
+      honesty: "Адалдық",
+      technology: "Технологиялар",
+      data: "Деректер",
+      people: "Адамдар",
+      innovation: "Инновациялар",
+      responsibility: "Жауапкершілік",
+      result: "Болашақ сенім экожүйесі",
+    },
+    copyright: "Барлық құқықтар қорғалған.",
+    privacy: "Құпиялылық саясаты",
+    terms: "Пайдалану шарттары",
+    companies: ["SENDIGITAL", "SENAUDIT", "SENFINANCE", "SENCONSULTING", "SENGROUP", "SEN FOUNDATION HUB"],
+    navLinks: [
+      { name: "Басты бет", href: "#hero" },
+      { name: "Құндылықтар", href: "#values" },
+      { name: "Экожүйе", href: "#ecosystem" },
+      { name: "Стандарттар", href: "#standards" },
+      { name: "Байланыс", href: "#contact" },
+    ],
+  },
+  en: {
+    description: "Ecosystem of trust and management for the future. We create technologies and services that strengthen trust — within organizations, between teams, partners, and society.",
+    tags: ["Technology", "Fintech", "Consulting"],
+    navigation: "Navigation",
+    ecosystem: "Ecosystem",
+    formula: {
+      honesty: "Honesty",
+      technology: "Technology",
+      data: "Data",
+      people: "People",
+      innovation: "Innovation",
+      responsibility: "Responsibility",
+      result: "Ecosystem of Trust for the Future",
+    },
+    copyright: "All rights reserved.",
+    privacy: "Privacy Policy",
+    terms: "Terms of Use",
+    companies: ["SENDIGITAL", "SENAUDIT", "SENFINANCE", "SENCONSULTING", "SENGROUP", "SEN FOUNDATION HUB"],
+    navLinks: [
+      { name: "Home", href: "#hero" },
+      { name: "Values", href: "#values" },
+      { name: "Ecosystem", href: "#ecosystem" },
+      { name: "Standards", href: "#standards" },
+      { name: "Contact", href: "#contact" },
+    ],
+  },
+};
 
 interface FooterProps {
   locale: string;
@@ -26,6 +90,7 @@ interface FooterProps {
 
 export default function Footer({ locale }: FooterProps) {
   const currentYear = new Date().getFullYear();
+  const t = footerTranslations[locale as keyof typeof footerTranslations] || footerTranslations.ru;
 
   return (
     <footer className="relative py-16 md:py-24 border-t border-border/30">
@@ -46,29 +111,25 @@ export default function Footer({ locale }: FooterProps) {
               />
             </a>
             <p className="text-muted max-w-md mb-6 leading-relaxed">
-              Экосистема доверия и управления будущего. Мы создаём технологии и
-              сервисы, которые укрепляют доверие — внутри организаций, между
-              командами, партнёрами и обществом.
+              {t.description}
             </p>
             <div className="flex items-center gap-3 text-sm">
-              <span className="px-3 py-1.5 glass rounded-full text-accent">
-                Технологии
-              </span>
-              <span className="px-3 py-1.5 glass rounded-full text-primary">
-                Финтех
-              </span>
-              <span className="px-3 py-1.5 glass rounded-full text-secondary">
-                Консалтинг
-              </span>
+              {t.tags.map((tag, index) => (
+                <span key={index} className={`px-3 py-1.5 glass rounded-full ${
+                  index === 0 ? "text-accent" : index === 1 ? "text-primary" : "text-secondary"
+                }`}>
+                  {tag}
+                </span>
+              ))}
             </div>
           </div>
 
           {/* Navigation */}
           <div>
-            <h4 className="text-white font-semibold mb-6">Навигация</h4>
+            <h4 className="text-white font-semibold mb-6">{t.navigation}</h4>
             <ul className="space-y-3">
-              {navigation.map((item) => (
-                <li key={item.name}>
+              {t.navLinks.map((item) => (
+                <li key={item.href}>
                   <a
                     href={item.href}
                     className="text-muted hover:text-white transition-colors text-sm"
@@ -82,9 +143,9 @@ export default function Footer({ locale }: FooterProps) {
 
           {/* Ecosystem */}
           <div>
-            <h4 className="text-white font-semibold mb-6">Экосистема</h4>
+            <h4 className="text-white font-semibold mb-6">{t.ecosystem}</h4>
             <ul className="space-y-3">
-              {ecosystemCompanies.map((company) => (
+              {t.companies.map((company) => (
                 <li key={company}>
                   <a
                     href="#ecosystem"
@@ -106,14 +167,14 @@ export default function Footer({ locale }: FooterProps) {
           className="text-center py-8 border-y border-border/30 mb-8"
         >
           <p className="text-sm md:text-base text-muted">
-            <span className="text-primary">Честность</span> +{" "}
-            <span className="text-secondary">Технологии</span> +{" "}
-            <span className="text-accent">Данные</span> +{" "}
-            <span className="text-orange-400">Люди</span> +{" "}
-            <span className="text-pink-400">Инновации</span> +{" "}
-            <span className="text-cyan-400">Ответственность</span> ={" "}
+            <span className="text-primary">{t.formula.honesty}</span> +{" "}
+            <span className="text-secondary">{t.formula.technology}</span> +{" "}
+            <span className="text-accent">{t.formula.data}</span> +{" "}
+            <span className="text-orange-400">{t.formula.people}</span> +{" "}
+            <span className="text-pink-400">{t.formula.innovation}</span> +{" "}
+            <span className="text-cyan-400">{t.formula.responsibility}</span> ={" "}
             <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-medium">
-              Экосистема доверия будущего
+              {t.formula.result}
             </span>
           </p>
         </motion.div>
@@ -121,14 +182,14 @@ export default function Footer({ locale }: FooterProps) {
         {/* Bottom */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted">
-            © {currentYear} SENGROUP. Все права защищены.
+            © {currentYear} SENGROUP. {t.copyright}
           </p>
           <div className="flex items-center gap-6">
             <a href="#" className="text-sm text-muted hover:text-white transition-colors">
-              Политика конфиденциальности
+              {t.privacy}
             </a>
             <a href="#" className="text-sm text-muted hover:text-white transition-colors">
-              Условия использования
+              {t.terms}
             </a>
           </div>
         </div>
@@ -136,4 +197,3 @@ export default function Footer({ locale }: FooterProps) {
     </footer>
   );
 }
-
