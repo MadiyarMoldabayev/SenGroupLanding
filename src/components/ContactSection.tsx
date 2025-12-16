@@ -39,7 +39,7 @@ export default function ContactSection({ locale }: ContactSectionProps) {
         </svg>
       ),
       title: "Адрес",
-      value: "Казахстан, г. Алматы",
+      value: "Казахстан, г. Астана",
     },
     {
       icon: (
