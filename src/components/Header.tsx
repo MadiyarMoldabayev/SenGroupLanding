@@ -86,7 +86,7 @@ export default function Header({ locale }: HeaderProps) {
         <Link href={`/${locale}/`} className="flex items-center group">
           <Image
             src="/logo.png"
-            alt="SEN Group"
+            alt="SENGROUP"
             width={180}
             height={50}
             className="h-10 w-auto brightness-100 group-hover:brightness-110 transition-all duration-300"

@@ -8,7 +8,7 @@ const valuesData = {
   ru: {
     badge: "Основа культуры, решений и поведения экосистемы",
     title: "Ценности",
-    titleHighlight: "SEN Group",
+    titleHighlight: "SENGROUP",
     subtitle: "Наши ценности определяют каждое решение, каждый проект и каждое взаимодействие в нашей экосистеме",
     values: [
       {
@@ -47,18 +47,12 @@ const valuesData = {
         description: "Мы создаём культуру, в которой каждый сотрудник чувствует свою ценность.",
         details: "Люди — главный интеллектуальный актив SEN.",
       },
-      {
-        number: "07",
-        title: "Ответственность перед обществом",
-        description: "Мы верим, что сильные организации создают сильное общество.",
-        details: "Мы создаём технологии, которые делают страны и организации лучше.",
-      },
     ],
   },
   kk: {
     badge: "Мәдениет, шешімдер және экожүйе мінез-құлқының негізі",
     title: "Құндылықтар",
-    titleHighlight: "SEN Group",
+    titleHighlight: "SENGROUP",
     subtitle: "Біздің құндылықтарымыз экожүйеміздегі әрбір шешімді, жобаны және өзара әрекеттесуді анықтайды",
     values: [
       {
@@ -97,18 +91,12 @@ const valuesData = {
         description: "Біз әр қызметкер өзінің құндылығын сезінетін мәдениетті құрамыз.",
         details: "Адамдар — SEN-нің басты интеллектуалдық активі.",
       },
-      {
-        number: "07",
-        title: "Қоғам алдындағы жауапкершілік",
-        description: "Біз күшті ұйымдар күшті қоғам құрады деп сенеміз.",
-        details: "Біз елдер мен ұйымдарды жақсартатын технологияларды құрамыз.",
-      },
     ],
   },
   en: {
     badge: "The foundation of culture, decisions, and ecosystem behavior",
     title: "Values",
-    titleHighlight: "SEN Group",
+    titleHighlight: "SENGROUP",
     subtitle: "Our values define every decision, project, and interaction within our ecosystem",
     values: [
       {
@@ -146,12 +134,6 @@ const valuesData = {
         title: "Respect and People Development",
         description: "We create a culture where every employee feels valued.",
         details: "People are SEN's main intellectual asset.",
-      },
-      {
-        number: "07",
-        title: "Social Responsibility",
-        description: "We believe that strong organizations create a strong society.",
-        details: "We create technologies that make countries and organizations better.",
       },
     ],
   },

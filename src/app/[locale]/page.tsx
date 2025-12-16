@@ -24,7 +24,6 @@ export default function LocalePage({ params }: PageProps) {
     <main className="min-h-screen mesh-bg">
       <Header locale={locale} />
       <HeroSection locale={locale} />
-      <EcosystemCubeWrapper locale={locale} />
       <ValuesSection locale={locale} />
       <EcosystemSection locale={locale} />
       <StandardsSection locale={locale} />

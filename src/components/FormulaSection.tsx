@@ -10,6 +10,7 @@ const formulaParts = [
   { text: "Данные", color: "from-accent to-emerald-400" },
   { text: "Люди", color: "from-orange-500 to-amber-400" },
   { text: "Инновации", color: "from-pink-500 to-rose-400" },
+  { text: "Инвестиции", color: "from-cyan-500 to-teal-400" },
 ];
 
 interface FormulaSectionProps {
@@ -79,8 +80,8 @@ export default function FormulaSection({ locale }: FormulaSectionProps) {
           >
             <div className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-accent blur-3xl opacity-20" />
             <h2 className="relative text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold">
-              <span className="gradient-text">
-                Экосистема доверия и управления будущего
+              <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent">
+                Экосистема доверия будущего
               </span>
             </h2>
           </motion.div>
@@ -92,7 +93,7 @@ export default function FormulaSection({ locale }: FormulaSectionProps) {
             transition={{ duration: 1, delay: 1.2 }}
             className="mt-16 flex justify-center gap-8"
           >
-            {[...Array(5)].map((_, i) => (
+            {formulaParts.map((part, i) => (
               <motion.div
                 key={i}
                 animate={{ y: [0, -10, 0] }}
@@ -101,7 +102,7 @@ export default function FormulaSection({ locale }: FormulaSectionProps) {
                   repeat: Infinity,
                   delay: i * 0.2,
                 }}
-                className={`w-3 h-3 rounded-full bg-gradient-to-r ${formulaParts[i].color}`}
+                className={`w-3 h-3 rounded-full bg-gradient-to-r ${part.color}`}
               />
             ))}
           </motion.div>

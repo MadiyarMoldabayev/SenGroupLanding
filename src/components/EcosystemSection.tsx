@@ -6,7 +6,7 @@ import { useRef } from "react";
 
 const companies = [
   {
-    name: "SenDigital",
+    name: "SENDIGITAL",
     description: "Цифровая трансформация и разработка технологических решений",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -16,7 +16,7 @@ const companies = [
     color: "from-primary to-blue-400",
   },
   {
-    name: "SenTechAudit",
+    name: "SENTECHAUDIT",
     description: "Технологический аудит и проверка IT-инфраструктуры",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -26,7 +26,7 @@ const companies = [
     color: "from-secondary to-purple-400",
   },
   {
-    name: "SenFinance",
+    name: "SENFINANCE",
     description: "Финтех решения и финансовый консалтинг",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -36,7 +36,7 @@ const companies = [
     color: "from-accent to-emerald-400",
   },
   {
-    name: "SenConsulting",
+    name: "SENCONSULTING",
     description: "Стратегический консалтинг и управленческие решения",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -46,7 +46,7 @@ const companies = [
     color: "from-orange-500 to-amber-400",
   },
   {
-    name: "SenMedia",
+    name: "SENGROUP",
     description: "Медиа и коммуникационные решения",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,7 +56,7 @@ const companies = [
     color: "from-pink-500 to-rose-400",
   },
   {
-    name: "FoundationHub",
+    name: "FOUNDATION HUB",
     description: "Социальный эффект и прозрачность",
     icon: (
       <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

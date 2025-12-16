@@ -6,7 +6,7 @@ const heroTranslations = {
   ru: {
     badge: "Экосистема технологий и доверия",
     title1: "Ценности и стандарты",
-    title2: "SEN Group",
+    title2: "SENGROUP",
     description: "Мы создаём технологии и сервисы, которые укрепляют доверие — внутри организаций, между командами, партнёрами и обществом.",
     cta1: "Узнать больше",
     cta2: "Наша экосистема",
@@ -14,7 +14,7 @@ const heroTranslations = {
   kk: {
     badge: "Технология және сенім экожүйесі",
     title1: "Құндылықтар мен стандарттар",
-    title2: "SEN Group",
+    title2: "SENGROUP",
     description: "Біз ұйымдар ішінде, командалар, серіктестер және қоғам арасында сенімді нығайтатын технологиялар мен қызметтерді құрамыз.",
     cta1: "Көбірек білу",
     cta2: "Біздің экожүйе",
@@ -22,7 +22,7 @@ const heroTranslations = {
   en: {
     badge: "Ecosystem of Technology and Trust",
     title1: "Values and Standards",
-    title2: "SEN Group",
+    title2: "SENGROUP",
     description: "We create technologies and services that strengthen trust — within organizations, between teams, partners, and society.",
     cta1: "Learn More",
     cta2: "Our Ecosystem",

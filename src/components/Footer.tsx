@@ -4,12 +4,12 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 const ecosystemCompanies = [
-  "SenDigital",
-  "SenTechAudit",
-  "SenFinance",
-  "SenConsulting",
-  "SenMedia",
-  "FoundationHub",
+  "SENDIGITAL",
+  "SENTECHAUDIT",
+  "SENFINANCE",
+  "SENCONSULTING",
+  "SENGROUP",
+  "FOUNDATION HUB",
 ];
 
 const navigation = [
@@ -39,7 +39,7 @@ export default function Footer({ locale }: FooterProps) {
             <a href="#hero" className="flex items-center mb-6 group">
               <Image
                 src="/logo.png"
-                alt="SEN Group"
+                alt="SENGROUP"
                 width={200}
                 height={55}
                 className="h-12 w-auto brightness-100 group-hover:brightness-110 transition-all duration-300"
@@ -110,9 +110,10 @@ export default function Footer({ locale }: FooterProps) {
             <span className="text-secondary">Технологии</span> +{" "}
             <span className="text-accent">Данные</span> +{" "}
             <span className="text-orange-400">Люди</span> +{" "}
-            <span className="text-pink-400">Инновации</span> ={" "}
-            <span className="text-white font-medium">
-              Экосистема доверия и управления будущего
+            <span className="text-pink-400">Инновации</span> +{" "}
+            <span className="text-cyan-400">Инвестиции</span> ={" "}
+            <span className="bg-gradient-to-r from-primary via-secondary to-accent bg-clip-text text-transparent font-medium">
+              Экосистема доверия будущего
             </span>
           </p>
         </motion.div>
@@ -120,7 +121,7 @@ export default function Footer({ locale }: FooterProps) {
         {/* Bottom */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-muted">
-            © {currentYear} SEN Group. Все права защищены.
+            © {currentYear} SENGROUP. Все права защищены.
           </p>
           <div className="flex items-center gap-6">
             <a href="#" className="text-sm text-muted hover:text-white transition-colors">
