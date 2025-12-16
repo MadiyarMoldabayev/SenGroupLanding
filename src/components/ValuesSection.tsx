@@ -13,9 +13,9 @@ const valuesData = {
     values: [
       {
         number: "01",
-        title: "Доверие как инфраструктура",
-        description: "Мы создаём технологии и сервисы, которые укрепляют доверие — внутри организаций, между командами, партнёрами и обществом.",
-        details: "Доверие — это не абстрактное понятие, а управляемый процесс: прозрачность данных, честность решений и ответственность за результат.",
+        title: "Ответственность перед обществом",
+        description: "Мы верим, что сильные организации создают сильное общество.",
+        details: "Мы создаём технологии, которые делают страны и организации лучше.",
       },
       {
         number: "02",
@@ -57,9 +57,9 @@ const valuesData = {
     values: [
       {
         number: "01",
-        title: "Инфрақұрылым ретінде сенім",
-        description: "Біз сенімді нығайтатын технологиялар мен қызметтерді құрамыз.",
-        details: "Сенім — бұл деректердің ашықтығы, шешімдердің адалдығы және нәтижеге жауапкершілік.",
+        title: "Қоғам алдындағы жауапкершілік",
+        description: "Біз күшті ұйымдар күшті қоғам құрады деп сенеміз.",
+        details: "Біз елдер мен ұйымдарды жақсартатын технологияларды құрамыз.",
       },
       {
         number: "02",
@@ -101,9 +101,9 @@ const valuesData = {
     values: [
       {
         number: "01",
-        title: "Trust as Infrastructure",
-        description: "We create technologies and services that strengthen trust — within organizations, between teams, partners, and society.",
-        details: "Trust is not abstract — it's a managed process: data transparency, honest decisions, and accountability for results.",
+        title: "Social Responsibility",
+        description: "We believe that strong organizations create a strong society.",
+        details: "We create technologies that make countries and organizations better.",
       },
       {
         number: "02",
