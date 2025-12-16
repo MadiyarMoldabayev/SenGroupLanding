@@ -19,8 +19,8 @@ const teamMembers: TeamMember[] = [
     image: "/team/new-1.png",
     name: { en: "Batima Mukina", kk: "Батима Мукина", ru: "Батима Мукина" },
     role: { en: "Chief Executive Officer", kk: "Бас директор", ru: "Генеральный директор" },
-    expertise: { en: "Grant law, compliance, audit, finance", kk: "Гранттық құқық, комплаенс, аудит, қаржы", ru: "Грантовое право, комплаенс, аудит, финансы" },
-    experience: { en: "10+ years of experience working with NGOs", kk: "ҮЕҰ-мен жұмыс тәжірибесі — 10 жылдан аса", ru: "+10 лет работы с НПО" },
+    expertise: { en: "Expert in audit, compliance and corporate law with 20+ years of cross-sectoral experience in public, quasi-public, NGO and business sectors, creating and implementing scalable fintech and AI solutions based on trust", kk: "Аудит, комплаенс және корпоративтік құқық бойынша маман, мемлекеттік, квазимемлекеттік, ҮЕҰ және бизнес секторларында 20+ жылдық сектораралық тәжірибесі бар, сенімге негізделген масштабталатын финтех және AI шешімдерін құрастырады және енгізеді", ru: "Эксперт по аудиту, комплаенсу и корпоративному праву с 20+ лет межсекторного опыта в государственном, квазигоссекторе, НПО и бизнесе, создаю и внедряю масштабируемые финтех и AI-решения, основанные на доверии" },
+    experience: { en: "20+ years of cross-sectoral experience", kk: "20+ жылдық сектораралық тәжірибе", ru: "20+ лет межсекторного опыта" },
   },
   {
     id: 2,
