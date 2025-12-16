@@ -152,16 +152,14 @@ export default function TeamSection({ locale }: TeamSectionProps) {
               <div
                 className={cn(
                   "absolute inset-0 transition-all duration-300",
-                  index === 0
-                    ? "bg-gradient-to-t from-black/90 via-black/40 to-transparent xl:bg-gradient-to-b xl:from-black/90 xl:via-black/30 xl:to-transparent"
-                    : "bg-gradient-to-t from-black/90 via-black/40 to-transparent"
+                  "bg-gradient-to-t from-black/90 via-black/40 to-transparent"
                 )}
               />
 
               <div
                 className={cn(
                   "absolute inset-0 p-6 flex flex-col",
-                  index === 0 ? "justify-end xl:justify-start" : "justify-end"
+                  "justify-end"
                 )}
               >
                 <div className="relative z-20 flex flex-col">
