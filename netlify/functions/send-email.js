@@ -37,8 +37,8 @@ exports.handler = async (event, context) => {
     console.log('SMTP User:', smtpUser);
     console.log('SMTP Password length:', smtpPassword ? smtpPassword.length : 0);
 
-    // Create transporter with SMTP settings
-    const transporter = nodemailer.createTransport({
+    // Try port 465 first (SSL)
+    let transporter = nodemailer.createTransport({
       host: 'pkz32.hoster.kz',
       port: 465,
       secure: true, // true for 465, false for other ports
@@ -47,12 +47,43 @@ exports.handler = async (event, context) => {
         pass: smtpPassword,
       },
       tls: {
-        rejectUnauthorized: false, // Some SMTP servers require this
-        ciphers: 'SSLv3', // Try different cipher if needed
+        rejectUnauthorized: false,
       },
-      debug: true, // Enable debug output
-      logger: true, // Enable logging
+      debug: false, // Set to true for detailed logs
+      logger: false,
     });
+
+    // Verify connection
+    try {
+      await transporter.verify();
+      console.log('SMTP connection verified on port 465');
+    } catch (verifyError) {
+      console.log('Port 465 failed, trying port 587 with STARTTLS');
+      // If 465 fails, try 587 with STARTTLS
+      transporter = nodemailer.createTransport({
+        host: 'pkz32.hoster.kz',
+        port: 587,
+        secure: false, // false for 587
+        requireTLS: true,
+        auth: {
+          user: smtpUser,
+          pass: smtpPassword,
+        },
+        tls: {
+          rejectUnauthorized: false,
+        },
+        debug: false,
+        logger: false,
+      });
+      
+      try {
+        await transporter.verify();
+        console.log('SMTP connection verified on port 587');
+      } catch (verifyError2) {
+        console.error('Both ports failed:', verifyError2.message);
+        throw verifyError2;
+      }
+    }
 
     // Email content
     const mailOptions = {
