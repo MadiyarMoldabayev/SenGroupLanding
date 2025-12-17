@@ -21,8 +21,13 @@ exports.handler = async (event, context) => {
     }
 
     // Get credentials from environment variables
-    const smtpUser = process.env.SMTP_USER || 'info@sengroup.one';
+    // Try both full email and username part
+    const smtpUserFull = process.env.SMTP_USER || 'info@sengroup.one';
+    const smtpUserOnly = smtpUserFull.split('@')[0]; // Just 'info' part
     const smtpPassword = process.env.SMTP_PASSWORD;
+    
+    // Use full email as default, but we'll try username-only if it fails
+    let smtpUser = smtpUserFull;
 
     // Validate credentials
     if (!smtpPassword) {
@@ -80,8 +85,29 @@ exports.handler = async (event, context) => {
         await transporter.verify();
         console.log('SMTP connection verified on port 587');
       } catch (verifyError2) {
-        console.error('Both ports failed:', verifyError2.message);
-        throw verifyError2;
+        console.error('Port 587 failed, trying with username only:', verifyError2.message);
+        // Try with username only (without @domain)
+        transporter = nodemailer.createTransport({
+          host: 'pkz32.hoster.kz',
+          port: 587,
+          secure: false,
+          requireTLS: true,
+          auth: {
+            user: smtpUserOnly, // Try just 'info' instead of 'info@sengroup.one'
+            pass: smtpPassword,
+          },
+          tls: {
+            rejectUnauthorized: false,
+          },
+        });
+        
+        try {
+          await transporter.verify();
+          console.log('SMTP connection verified on port 587 with username only');
+        } catch (verifyError3) {
+          console.error('All connection attempts failed:', verifyError3.message);
+          throw verifyError3;
+        }
       }
     }
 
