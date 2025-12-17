@@ -26,6 +26,7 @@ const contactTranslations = {
     messagePlaceholder: "Расскажите о вашем проекте...",
     submitting: "Отправка...",
     submit: "Отправить сообщение",
+    submitError: "Произошла ошибка при отправке. Пожалуйста, попробуйте позже.",
     contactInfo: "Контактная информация",
     socialNetworks: "Социальные сети",
     languages: "Мы работаем на русском, казахском и английском языках",
@@ -53,6 +54,7 @@ const contactTranslations = {
     messagePlaceholder: "Жобаңыз туралы айтыңыз...",
     submitting: "Жіберілуде...",
     submit: "Хабарлама жіберу",
+    submitError: "Жіберу кезінде қате орын алды. Кейінірек қайталаңыз.",
     contactInfo: "Байланыс ақпараты",
     socialNetworks: "Әлеуметтік желілер",
     languages: "Біз орыс, қазақ және ағылшын тілдерінде жұмыс істейміз",
@@ -80,6 +82,7 @@ const contactTranslations = {
     messagePlaceholder: "Tell us about your project...",
     submitting: "Sending...",
     submit: "Send message",
+    submitError: "An error occurred while sending. Please try again later.",
     contactInfo: "Contact Information",
     socialNetworks: "Social Networks",
     languages: "We work in Russian, Kazakh and English",
@@ -108,11 +111,35 @@ export default function ContactSection({ locale }: ContactSectionProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    setFormState({ name: "", email: "", company: "", message: "" });
+
+    try {
+      const response = await fetch('/.netlify/functions/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formState.name,
+          email: formState.email,
+          company: formState.company,
+          message: formState.message,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to send email');
+      }
+
+      setIsSubmitted(true);
+      setFormState({ name: "", email: "", company: "", message: "" });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert(t.submitError);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfoIcons = [
