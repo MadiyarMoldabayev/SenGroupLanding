@@ -33,6 +33,10 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Debug logging (without exposing password)
+    console.log('SMTP User:', smtpUser);
+    console.log('SMTP Password length:', smtpPassword ? smtpPassword.length : 0);
+
     // Create transporter with SMTP settings
     const transporter = nodemailer.createTransport({
       host: 'pkz32.hoster.kz',
@@ -44,7 +48,10 @@ exports.handler = async (event, context) => {
       },
       tls: {
         rejectUnauthorized: false, // Some SMTP servers require this
+        ciphers: 'SSLv3', // Try different cipher if needed
       },
+      debug: true, // Enable debug output
+      logger: true, // Enable logging
     });
 
     // Email content
