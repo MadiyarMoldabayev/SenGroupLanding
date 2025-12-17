@@ -20,14 +20,30 @@ exports.handler = async (event, context) => {
       };
     }
 
+    // Get credentials from environment variables
+    const smtpUser = process.env.SMTP_USER || 'info@sengroup.one';
+    const smtpPassword = process.env.SMTP_PASSWORD;
+
+    // Validate credentials
+    if (!smtpPassword) {
+      console.error('SMTP_PASSWORD is not set');
+      return {
+        statusCode: 500,
+        body: JSON.stringify({ error: 'SMTP configuration error' }),
+      };
+    }
+
     // Create transporter with SMTP settings
     const transporter = nodemailer.createTransport({
       host: 'pkz32.hoster.kz',
       port: 465,
       secure: true, // true for 465, false for other ports
       auth: {
-        user: process.env.SMTP_USER || 'info@sengroup.one',
-        pass: process.env.SMTP_PASSWORD, // Should be set in Netlify environment variables
+        user: smtpUser,
+        pass: smtpPassword,
+      },
+      tls: {
+        rejectUnauthorized: false, // Some SMTP servers require this
       },
     });
 
