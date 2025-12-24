@@ -6,163 +6,166 @@ import { useRef } from "react";
 
 const engoHubData = {
   ru: {
-    badge: "Наш флагманский продукт",
+    badge: "AI-Powered • Многомодульная платформа",
     title: "ENGOHUB",
-    titleHighlight: "— центр поддержки НПО",
-    subtitle: "Мы помогаем НПО Казахстана и Центральной Азии быть прозрачными, устойчивыми и эффективными",
-    description: "SEN — центр развития и поддержки НПО Казахстана и Центральной Азии. Мы усиливаем организации, которые создают позитивные изменения: помогаем им становиться устойчивыми, прозрачными и профессиональными.",
+    titleHighlight: "— умная экосистема для НПО",
+    subtitle: "Технологичная платформа нового поколения с искусственным интеллектом для развития гражданского сектора",
+    description: "ENGOHUB — это многомодульная цифровая платформа, объединяющая AI-технологии, автоматизацию и экспертизу для комплексной поддержки НПО. Каждый модуль — это самостоятельный инструмент, который интегрируется в единую экосистему.",
+    techBadges: ["AI-Powered", "Многомодульная", "Cloud-Native", "Автоматизация"],
     features: [
       {
-        title: "Консалтинг",
-        description: "Экспертное сопровождение по финансам, управлению и стратегии развития НПО",
+        title: "AI-Консалтинг",
+        description: "Интеллектуальные рекомендации по финансам и стратегии на основе анализа данных и машинного обучения",
         icon: "briefcase",
       },
       {
-        title: "Образование",
-        description: "Обучение команд НПО современным методам финансового управления и отчётности",
+        title: "Образовательный модуль",
+        description: "Адаптивное обучение с персонализированными треками и AI-ассистентом для команд НПО",
         icon: "education",
       },
       {
-        title: "Менторство",
-        description: "Индивидуальное сопровождение НПО и лидеров инициатив — от идеи до масштаба",
+        title: "Менторство 2.0",
+        description: "Умный матчинг менторов и НПО, трекинг прогресса и автоматизированная система сопровождения",
         icon: "mentor",
       },
       {
-        title: "Юридическое сопровождение",
-        description: "Разработка политик, комплаенс, правовая поддержка и регулирование деятельности",
+        title: "Legal Tech модуль",
+        description: "Автоматизированная проверка комплаенса, генерация документов и мониторинг изменений в законодательстве",
         icon: "legal",
       },
       {
-        title: "Цифровизация",
-        description: "IT-решения, автоматизация процессов, внедрение цифровых систем управления",
+        title: "Цифровой хаб",
+        description: "Интеграция IT-решений, автоматизация процессов, дашборды аналитики и облачная инфраструктура",
         icon: "digital",
       },
       {
-        title: "Международные проекты",
-        description: "Поддержка грантов, работа с донорами и сопровождение транснациональных программ",
+        title: "Грантовый модуль",
+        description: "AI-поиск грантов, автозаполнение заявок, мониторинг дедлайнов и управление проектами",
         icon: "global",
       },
     ],
     audiences: [
       {
         title: "Благополучатели",
-        description: "Поддержка, которая меняет жизни. Мы создаём программы и условия для роста и реализации потенциала каждого.",
+        description: "Персонализированный доступ к программам развития через умную систему рекомендаций и сопровождения.",
       },
       {
         title: "НПО",
-        description: "Развиваем лидеров перемен. Экспертиза, инструменты и менторство для тех, кто строит будущее социальных инициатив.",
+        description: "Полный набор цифровых инструментов: от CRM и финансов до AI-ассистента и автоматизации отчётности.",
       },
       {
         title: "Доноры",
-        description: "Инвестиции в устойчивые решения. Прозрачная и эффективная экосистема, где ресурсы превращаются в долгосрочный эффект.",
+        description: "Прозрачная аналитика, real-time мониторинг проектов и измеримые метрики социального воздействия.",
       },
     ],
     cta: "Перейти на ENGOHUB",
   },
   kk: {
-    badge: "Біздің флагмандық өнім",
+    badge: "AI-Powered • Көпмодульді платформа",
     title: "ENGOHUB",
-    titleHighlight: "— ҮЕҰ қолдау орталығы",
-    subtitle: "Біз Қазақстан мен Орталық Азия ҮЕҰ-ларына ашық, тұрақты және тиімді болуға көмектесеміз",
-    description: "SEN — Қазақстан мен Орталық Азия ҮЕҰ-ларын дамыту және қолдау орталығы. Біз позитивті өзгерістер жасайтын ұйымдарды күшейтеміз: оларға тұрақты, ашық және кәсіби болуға көмектесеміз.",
+    titleHighlight: "— ҮЕҰ үшін ақылды экожүйе",
+    subtitle: "Азаматтық секторды дамытуға арналған жасанды интеллекті жаңа буын технологиялық платформа",
+    description: "ENGOHUB — бұл ҮЕҰ-ларды кешенді қолдау үшін AI-технологияларды, автоматтандыруды және сараптаманы біріктіретін көпмодульді цифрлық платформа. Әрбір модуль — бірыңғай экожүйеге интеграцияланатын дербес құрал.",
+    techBadges: ["AI-Powered", "Көпмодульді", "Cloud-Native", "Автоматтандыру"],
     features: [
       {
-        title: "Консалтинг",
-        description: "ҮЕҰ қаржысы, басқару және даму стратегиясы бойынша сараптамалық қолдау",
+        title: "AI-Консалтинг",
+        description: "Деректерді талдау және машиналық оқыту негізінде қаржы мен стратегия бойынша интеллектуалды ұсыныстар",
         icon: "briefcase",
       },
       {
-        title: "Білім беру",
-        description: "ҮЕҰ командаларын қаржылық басқару мен есептіліктің заманауи әдістеріне оқыту",
+        title: "Білім беру модулі",
+        description: "ҮЕҰ командалары үшін жекелендірілген трек және AI-көмекшісі бар адаптивті оқыту",
         icon: "education",
       },
       {
-        title: "Менторлық",
-        description: "ҮЕҰ мен бастама көшбасшыларын жеке қолдау — идеядан масштабқа дейін",
+        title: "Менторлық 2.0",
+        description: "Менторлар мен ҮЕҰ-ларды ақылды сәйкестендіру, прогресті бақылау және автоматтандырылған сүйемелдеу жүйесі",
         icon: "mentor",
       },
       {
-        title: "Заңгерлік қолдау",
-        description: "Саясаттарды әзірлеу, комплаенс, құқықтық қолдау және қызметті реттеу",
+        title: "Legal Tech модулі",
+        description: "Комплаенсті автоматтандырылған тексеру, құжаттар генерациясы және заңнамадағы өзгерістерді мониторинг",
         icon: "legal",
       },
       {
-        title: "Цифрландыру",
-        description: "IT-шешімдер, процестерді автоматтандыру, цифрлық басқару жүйелерін енгізу",
+        title: "Цифрлық хаб",
+        description: "IT-шешімдерді интеграциялау, процестерді автоматтандыру, аналитика дашбордтары және бұлттық инфрақұрылым",
         icon: "digital",
       },
       {
-        title: "Халықаралық жобалар",
-        description: "Гранттарды қолдау, донорлармен жұмыс және трансұлттық бағдарламаларды сүйемелдеу",
+        title: "Гранттық модуль",
+        description: "Гранттарды AI-іздеу, өтінімдерді автотолтыру, дедлайндарды мониторинг және жобаларды басқару",
         icon: "global",
       },
     ],
     audiences: [
       {
         title: "Пайда алушылар",
-        description: "Өмірді өзгертетін қолдау. Біз әркімнің өсуі мен әлеуетін іске асыруы үшін бағдарламалар мен жағдайлар жасаймыз.",
+        description: "Ақылды ұсыныстар және сүйемелдеу жүйесі арқылы даму бағдарламаларына жекелендірілген қол жеткізу.",
       },
       {
         title: "ҮЕҰ",
-        description: "Өзгеріс көшбасшыларын дамытамыз. Әлеуметтік бастамалардың болашағын құратындар үшін сараптама, құралдар және менторлық.",
+        description: "Цифрлық құралдардың толық жиынтығы: CRM мен қаржыдан AI-көмекшіге және есептілікті автоматтандыруға дейін.",
       },
       {
         title: "Донорлар",
-        description: "Тұрақты шешімдерге инвестициялар. Ресурстар ұзақ мерзімді әсерге айналатын ашық және тиімді экожүйе.",
+        description: "Ашық аналитика, жобаларды real-time мониторингі және әлеуметтік әсердің өлшенетін метрикалары.",
       },
     ],
     cta: "ENGOHUB-қа өту",
   },
   en: {
-    badge: "Our Flagship Product",
+    badge: "AI-Powered • Multi-Module Platform",
     title: "ENGOHUB",
-    titleHighlight: "— NGO Support Center",
-    subtitle: "We help NGOs in Kazakhstan and Central Asia to be transparent, sustainable, and effective",
-    description: "SEN is a center for development and support of NGOs in Kazakhstan and Central Asia. We strengthen organizations that create positive changes: helping them become sustainable, transparent, and professional.",
+    titleHighlight: "— Smart Ecosystem for NGOs",
+    subtitle: "Next-generation technology platform with artificial intelligence for civil sector development",
+    description: "ENGOHUB is a multi-module digital platform that combines AI technologies, automation, and expertise for comprehensive NGO support. Each module is a standalone tool that integrates into a unified ecosystem.",
+    techBadges: ["AI-Powered", "Multi-Module", "Cloud-Native", "Automation"],
     features: [
       {
-        title: "Consulting",
-        description: "Expert support in finance, management, and NGO development strategy",
+        title: "AI Consulting",
+        description: "Intelligent recommendations on finance and strategy based on data analysis and machine learning",
         icon: "briefcase",
       },
       {
-        title: "Education",
-        description: "Training NGO teams in modern financial management and reporting methods",
+        title: "Education Module",
+        description: "Adaptive learning with personalized tracks and AI assistant for NGO teams",
         icon: "education",
       },
       {
-        title: "Mentorship",
-        description: "Individual support for NGOs and initiative leaders — from idea to scale",
+        title: "Mentorship 2.0",
+        description: "Smart matching of mentors and NGOs, progress tracking, and automated support system",
         icon: "mentor",
       },
       {
-        title: "Legal Support",
-        description: "Policy development, compliance, legal support, and activity regulation",
+        title: "Legal Tech Module",
+        description: "Automated compliance checking, document generation, and legislation change monitoring",
         icon: "legal",
       },
       {
-        title: "Digitalization",
-        description: "IT solutions, process automation, implementation of digital management systems",
+        title: "Digital Hub",
+        description: "IT solution integration, process automation, analytics dashboards, and cloud infrastructure",
         icon: "digital",
       },
       {
-        title: "International Projects",
-        description: "Grant support, work with donors, and support of transnational programs",
+        title: "Grant Module",
+        description: "AI grant search, auto-fill applications, deadline monitoring, and project management",
         icon: "global",
       },
     ],
     audiences: [
       {
         title: "Beneficiaries",
-        description: "Support that changes lives. We create programs and conditions for everyone to grow and realize their potential.",
+        description: "Personalized access to development programs through smart recommendation and support system.",
       },
       {
         title: "NGOs",
-        description: "Developing leaders of change. Expertise, tools, and mentorship for those building the future of social initiatives.",
+        description: "Complete set of digital tools: from CRM and finance to AI assistant and reporting automation.",
       },
       {
         title: "Donors",
-        description: "Investments in sustainable solutions. A transparent and effective ecosystem where resources turn into long-term impact.",
+        description: "Transparent analytics, real-time project monitoring, and measurable social impact metrics.",
       },
     ],
     cta: "Go to ENGOHUB",
@@ -172,7 +175,7 @@ const engoHubData = {
 const featureIcons: { [key: string]: JSX.Element } = {
   briefcase: (
     <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
     </svg>
   ),
   education: (
@@ -238,16 +241,56 @@ export default function EngoHubSection({ locale }: EngoHubSectionProps) {
           transition={{ duration: 0.6 }}
           className="text-center mb-16 md:mb-20"
         >
-          <span className="inline-block px-4 py-2 rounded-full glass text-sm text-accent mb-6">
+          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass text-sm text-accent mb-6">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
             {t.badge}
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">
             <span className="gradient-text">{t.title}</span>
             {t.titleHighlight}
           </h2>
-          <p className="text-muted text-lg md:text-xl max-w-3xl mx-auto mb-6">
+          <p className="text-muted text-lg md:text-xl max-w-3xl mx-auto mb-4">
             {t.subtitle}
           </p>
+          
+          {/* Tech Badges */}
+          <div className="flex flex-wrap justify-center gap-2 mb-6">
+            {t.techBadges.map((badge, index) => (
+              <motion.span
+                key={badge}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.4, delay: 0.2 + index * 0.1 }}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs font-medium"
+              >
+                {badge === "AI-Powered" && (
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                )}
+                {(badge === "Многомодульная" || badge === "Көпмодульді" || badge === "Multi-Module") && (
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                  </svg>
+                )}
+                {badge === "Cloud-Native" && (
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
+                  </svg>
+                )}
+                {(badge === "Автоматизация" || badge === "Автоматтандыру" || badge === "Automation") && (
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                )}
+                {badge}
+              </motion.span>
+            ))}
+          </div>
+          
           <p className="text-muted/80 text-base md:text-lg max-w-4xl mx-auto">
             {t.description}
           </p>
