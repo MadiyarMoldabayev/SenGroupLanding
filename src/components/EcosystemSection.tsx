@@ -14,26 +14,32 @@ const companiesData = {
       {
         name: "SENDIGITAL",
         description: "Цифровая трансформация и разработка технологических решений",
+        link: "https://sendigital.one",
       },
       {
         name: "SENAUDIT",
         description: "Технологический аудит и проверка IT-инфраструктуры",
+        link: "https://audit.sengroup.one",
       },
       {
         name: "SENFINANCE",
         description: "Финтех решения и финансовый консалтинг",
+        link: null,
       },
       {
         name: "SENCONSULTING",
         description: "Стратегический консалтинг и управленческие решения",
+        link: null,
       },
       {
         name: "SENGROUP",
         description: "Медиа и коммуникационные решения",
+        link: null,
       },
       {
         name: "SEN FOUNDATION HUB",
         description: "Социальный эффект и прозрачность",
+        link: "https://engohub.com",
       },
     ],
   },
@@ -46,26 +52,32 @@ const companiesData = {
       {
         name: "SENDIGITAL",
         description: "Цифрлық трансформация және технологиялық шешімдерді әзірлеу",
+        link: "https://sendigital.one",
       },
       {
         name: "SENAUDIT",
         description: "Технологиялық аудит және IT-инфрақұрылымды тексеру",
+        link: "https://audit.sengroup.one",
       },
       {
         name: "SENFINANCE",
         description: "Финтех шешімдері және қаржылық консалтинг",
+        link: null,
       },
       {
         name: "SENCONSULTING",
         description: "Стратегиялық консалтинг және басқару шешімдері",
+        link: null,
       },
       {
         name: "SENGROUP",
         description: "Медиа және коммуникациялық шешімдер",
+        link: null,
       },
       {
         name: "SEN FOUNDATION HUB",
         description: "Әлеуметтік әсер және ашықтық",
+        link: "https://engohub.com",
       },
     ],
   },
@@ -78,26 +90,32 @@ const companiesData = {
       {
         name: "SENDIGITAL",
         description: "Digital transformation and development of technological solutions",
+        link: "https://sendigital.one",
       },
       {
         name: "SENAUDIT",
         description: "Technology audit and IT infrastructure verification",
+        link: "https://audit.sengroup.one",
       },
       {
         name: "SENFINANCE",
         description: "Fintech solutions and financial consulting",
+        link: null,
       },
       {
         name: "SENCONSULTING",
         description: "Strategic consulting and management solutions",
+        link: null,
       },
       {
         name: "SENGROUP",
         description: "Media and communication solutions",
+        link: null,
       },
       {
         name: "SEN FOUNDATION HUB",
         description: "Social impact and transparency",
+        link: "https://engohub.com",
       },
     ],
   },
@@ -169,27 +187,55 @@ export default function EcosystemSection({ locale }: EcosystemSectionProps) {
 
         {/* Companies Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-          {t.companies.map((company, index) => (
-            <motion.div
-              key={company.name}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group glass rounded-2xl p-6 card-hover"
-            >
-              <div
-                className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colors[index]} p-[1px] mb-4`}
-              >
-                <div className="w-full h-full bg-dark rounded-xl flex items-center justify-center text-white">
-                  {icons[index]}
+          {t.companies.map((company, index) => {
+            const CardContent = (
+              <>
+                <div
+                  className={`w-12 h-12 rounded-xl bg-gradient-to-br ${colors[index]} p-[1px] mb-4`}
+                >
+                  <div className="w-full h-full bg-dark rounded-xl flex items-center justify-center text-white">
+                    {icons[index]}
+                  </div>
                 </div>
-              </div>
-              <h3 className="text-xl font-bold text-white mb-2 group-hover:text-primary transition-colors">
-                {company.name}
-              </h3>
-              <p className="text-muted text-sm">{company.description}</p>
-            </motion.div>
-          ))}
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors">
+                    {company.name}
+                  </h3>
+                  {company.link && (
+                    <svg className="w-4 h-4 text-muted group-hover:text-primary transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  )}
+                </div>
+                <p className="text-muted text-sm">{company.description}</p>
+              </>
+            );
+
+            return company.link ? (
+              <motion.a
+                key={company.name}
+                href={company.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group glass rounded-2xl p-6 card-hover cursor-pointer"
+              >
+                {CardContent}
+              </motion.a>
+            ) : (
+              <motion.div
+                key={company.name}
+                initial={{ opacity: 0, y: 30 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="group glass rounded-2xl p-6 card-hover"
+              >
+                {CardContent}
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -3,7 +3,7 @@ import HeroSection from "@/components/HeroSection";
 import ValuesSection from "@/components/ValuesSection";
 import StandardsSection from "@/components/StandardsSection";
 import EcosystemSection from "@/components/EcosystemSection";
-import EcosystemCubeWrapper from "@/components/EcosystemCubeWrapper";
+import EngoHubSection from "@/components/EngoHubSection";
 import FormulaSection from "@/components/FormulaSection";
 import TeamSection from "@/components/TeamSection";
 import ContactSection from "@/components/ContactSection";
@@ -26,6 +26,7 @@ export default function LocalePage({ params }: PageProps) {
       <HeroSection locale={locale} />
       <ValuesSection locale={locale} />
       <EcosystemSection locale={locale} />
+      <EngoHubSection locale={locale} />
       <StandardsSection locale={locale} />
       <TeamSection locale={locale} />
       <FormulaSection locale={locale} />
