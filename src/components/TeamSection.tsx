@@ -18,9 +18,9 @@ const teamMembers: TeamMember[] = [
     id: 1,
     image: "/team/BatimaMukinaSengroup.jpg",
     name: { en: "Batima Mukina", kk: "Батима Мукина", ru: "Батима Мукина" },
-    role: { en: "Chief Executive Officer", kk: "Бас директор", ru: "Генеральный директор" },
-    expertise: { en: "Expert in audit, compliance and corporate law with 20+ years of cross-sectoral experience in public, quasi-public, NGO and business sectors, creating and implementing scalable fintech and AI solutions based on trust", kk: "Аудит, комплаенс және корпоративтік құқық бойынша маман, мемлекеттік, квазимемлекеттік, ҮЕҰ және бизнес секторларында 20+ жылдық сектораралық тәжірибесі бар, сенімге негізделген масштабталатын финтех және AI шешімдерін құрастырады және енгізеді", ru: "Эксперт по аудиту, комплаенсу и корпоративному праву с 20+ лет межсекторного опыта в государственном, квазигоссекторе, НПО и бизнесе, создаю и внедряю масштабируемые финтех и AI-решения, основанные на доверии" },
-    experience: { en: "20+ years of cross-sectoral experience", kk: "20+ жылдық сектораралық тәжірибе", ru: "20+ лет межсекторного опыта" },
+    role: { en: "CEO & Founder", kk: "Бас директор және Негізін қалаушы", ru: "Генеральный директор и Основатель" },
+    expertise: { en: "", kk: "", ru: "" },
+    experience: { en: "", kk: "", ru: "" },
   },
 ];
 
@@ -115,14 +115,8 @@ export default function TeamSection({ locale }: TeamSectionProps) {
                   <h6 className="text-white font-bold text-xl md:text-2xl leading-[1.1] mb-1">
                     {getLocalized(item.name)}
                   </h6>
-                  <p className="text-primary text-base md:text-lg font-medium leading-[1.5] mb-2">
+                  <p className="text-primary text-base md:text-lg font-medium leading-[1.5]">
                     {getLocalized(item.role)}
-                  </p>
-                  <p className="text-light/80 text-sm leading-[1.5]">
-                    {getLocalized(item.expertise)}
-                  </p>
-                  <p className="text-muted text-xs mt-1">
-                    {getLocalized(item.experience)}
                   </p>
                 </div>
               </div>
