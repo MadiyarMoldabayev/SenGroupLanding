@@ -185,7 +185,7 @@ export default function Footer({ locale }: FooterProps) {
             © {currentYear} SENGROUP. {t.copyright}
           </p>
           <div className="flex items-center gap-6">
-            <a href="#" className="text-sm text-muted hover:text-white transition-colors">
+            <a href="https://docs.google.com/document/d/1xNd-wi26hwzwKLm5ZNJ5GL2CG_GbCa6E/export?format=pdf" target="_blank" rel="noopener noreferrer" className="text-sm text-muted hover:text-white transition-colors">
               {t.privacy}
             </a>
             <a href="#" className="text-sm text-muted hover:text-white transition-colors">
