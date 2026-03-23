@@ -19,6 +19,7 @@
   "author": "SEN Group",
   "license": "MIT",
   "dependencies": {
+    "@opentelemetry/api": "^1.9.0",
     "@supabase/supabase-js": "^2.99.3",
     "@types/node": "^20.0.0",
     "@types/nodemailer": "^7.0.4",
