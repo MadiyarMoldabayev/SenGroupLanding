@@ -20,6 +20,7 @@ const navTranslations: { [key: string]: { [key: string]: string } } = {
     standards: "Стандарты",
     team: "Команда",
     contact: "Контакты",
+    blog: "Блог",
     cta: "Связаться с нами",
   },
   kk: {
@@ -29,6 +30,7 @@ const navTranslations: { [key: string]: { [key: string]: string } } = {
     standards: "Стандарттар",
     team: "Команда",
     contact: "Байланыс",
+    blog: "Блог",
     cta: "Бізбен байланысу",
   },
   en: {
@@ -38,6 +40,7 @@ const navTranslations: { [key: string]: { [key: string]: string } } = {
     standards: "Standards",
     team: "Team",
     contact: "Contact",
+    blog: "Blog",
     cta: "Contact Us",
   },
 };
@@ -68,6 +71,7 @@ export default function Header({ locale }: HeaderProps) {
     { name: t.standards, href: "#standards" },
     { name: t.team, href: "#team" },
     { name: t.contact, href: "#contact" },
+    { name: t.blog, href: `/${locale}/blog/` },
   ];
 
   const currentLangData = languages.find((l) => l.code === locale);
@@ -97,12 +101,21 @@ export default function Header({ locale }: HeaderProps) {
         <ul className="hidden lg:flex items-center gap-8">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <a
-                href={link.href}
-                className="text-muted hover:text-white transition-colors duration-300 text-sm font-medium"
-              >
-                {link.name}
-              </a>
+              {link.href.startsWith("#") ? (
+                <a
+                  href={link.href}
+                  className="text-muted hover:text-white transition-colors duration-300 text-sm font-medium"
+                >
+                  {link.name}
+                </a>
+              ) : (
+                <Link
+                  href={link.href}
+                  className="text-muted hover:text-white transition-colors duration-300 text-sm font-medium"
+                >
+                  {link.name}
+                </Link>
+              )}
             </li>
           ))}
         </ul>
@@ -227,16 +240,27 @@ export default function Header({ locale }: HeaderProps) {
         className="lg:hidden overflow-hidden glass mt-2 mx-4 rounded-2xl"
       >
         <div className="p-6 flex flex-col gap-4">
-          {navLinks.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className="text-light hover:text-primary transition-colors duration-300 text-lg font-medium py-2"
-            >
-              {link.name}
-            </a>
-          ))}
+          {navLinks.map((link) =>
+            link.href.startsWith("#") ? (
+              <a
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="text-light hover:text-primary transition-colors duration-300 text-lg font-medium py-2"
+              >
+                {link.name}
+              </a>
+            ) : (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="text-light hover:text-primary transition-colors duration-300 text-lg font-medium py-2"
+              >
+                {link.name}
+              </Link>
+            )
+          )}
           <a href="#contact" className="btn-primary text-center mt-4">
             {t.cta}
           </a>
