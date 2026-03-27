@@ -5,6 +5,12 @@ const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
+const VALID_LOCALES = ["ru", "kk", "en"];
+
+export function safeLocale(locale: string): string {
+  return VALID_LOCALES.includes(locale) ? locale : "ru";
+}
+
 export interface Article {
   id: string;
   title: string;

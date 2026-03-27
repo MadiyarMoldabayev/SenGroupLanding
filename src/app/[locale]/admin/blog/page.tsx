@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { supabase, Article } from "@/lib/supabase";
+import { supabase, Article, safeLocale } from "@/lib/supabase";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -80,7 +80,7 @@ interface PageProps {
 }
 
 export default function AdminBlogPage({ params }: PageProps) {
-  const locale = params.locale;
+  const locale = safeLocale(params.locale);
   const t = translations[locale] || translations.ru;
   const router = useRouter();
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabase, Article } from "@/lib/supabase";
+import { supabase, Article, safeLocale } from "@/lib/supabase";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -37,7 +37,7 @@ interface PageProps {
 }
 
 export default function BlogPage({ params }: PageProps) {
-  const locale = params.locale;
+  const locale = safeLocale(params.locale);
   const t = translations[locale] || translations.ru;
   const [articles, setArticles] = useState<Article[]>([]);
   const [loading, setLoading] = useState(true);
