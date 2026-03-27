@@ -65,13 +65,13 @@ export default function Header({ locale }: HeaderProps) {
   const t = navTranslations[locale] || navTranslations.ru;
 
   const navLinks = [
+    { name: t.blog, href: `/${locale}/blog/` },
     { name: t.home, href: "#hero" },
     { name: t.values, href: "#values" },
     { name: t.ecosystem, href: "#ecosystem" },
     { name: t.standards, href: "#standards" },
     { name: t.team, href: "#team" },
     { name: t.contact, href: "#contact" },
-    { name: t.blog, href: `/${locale}/blog/` },
   ];
 
   const currentLangData = languages.find((l) => l.code === locale);

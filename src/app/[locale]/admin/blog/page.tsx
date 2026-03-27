@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { supabase, Article, safeLocale } from "@/lib/supabase";
+import { renderContent } from "@/lib/renderContent";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -17,17 +18,23 @@ const translations: { [key: string]: { [key: string]: string } } = {
     coverImage: "URL обложки",
     published: "Опубликовано",
     draft: "Черновик",
-    save: "Сохранить",
+    saveDraft: "Сохранить черновик",
+    publish: "Опубликовать",
+    unpublish: "Снять с публикации",
     delete: "Удалить",
     cancel: "Отмена",
-    back: "На главную",
     logout: "Выйти",
     noArticles: "Статей пока нет",
     edit: "Редактировать",
     confirmDelete: "Вы уверены, что хотите удалить эту статью?",
     saved: "Статья сохранена",
-    contentHelp: "Поддерживается Markdown. Для вставки изображений используйте ![описание](url). Для видео вставьте ссылку на YouTube/Vimeo. Для файлов используйте [название файла](url).",
+    publishedMsg: "Статья опубликована",
+    contentHelp:
+      "Поддерживается Markdown. Для вставки изображений используйте ![описание](url). Для видео вставьте ссылку на YouTube/Vimeo. Для файлов используйте [название файла](url).",
     viewBlog: "Открыть блог",
+    preview: "Предпросмотр",
+    editor: "Редактор",
+    uploadMd: "Загрузить .md",
   },
   kk: {
     title: "Блогты басқару",
@@ -39,17 +46,23 @@ const translations: { [key: string]: { [key: string]: string } } = {
     coverImage: "Мұқаба URL",
     published: "Жарияланған",
     draft: "Жоба",
-    save: "Сақтау",
+    saveDraft: "Жобаны сақтау",
+    publish: "Жариялау",
+    unpublish: "Жарияламау",
     delete: "Жою",
     cancel: "Бас тарту",
-    back: "Басты бетке",
     logout: "Шығу",
     noArticles: "Мақалалар жоқ",
     edit: "Өңдеу",
     confirmDelete: "Бұл мақаланы жоюға сенімдісіз бе?",
     saved: "Мақала сақталды",
-    contentHelp: "Markdown қолдау көрсетіледі. Суреттер үшін ![сипаттама](url) пайдаланыңыз. Бейне үшін YouTube/Vimeo сілтемесін қойыңыз. Файлдар үшін [файл аты](url) пайдаланыңыз.",
+    publishedMsg: "Мақала жарияланды",
+    contentHelp:
+      "Markdown қолдау көрсетіледі. Суреттер үшін ![сипаттама](url) пайдаланыңыз. Бейне үшін YouTube/Vimeo сілтемесін қойыңыз. Файлдар үшін [файл аты](url) пайдаланыңыз.",
     viewBlog: "Блогты ашу",
+    preview: "Алдын ала қарау",
+    editor: "Редактор",
+    uploadMd: ".md жүктеу",
   },
   en: {
     title: "Blog Management",
@@ -61,17 +74,23 @@ const translations: { [key: string]: { [key: string]: string } } = {
     coverImage: "Cover image URL",
     published: "Published",
     draft: "Draft",
-    save: "Save",
+    saveDraft: "Save Draft",
+    publish: "Publish",
+    unpublish: "Unpublish",
     delete: "Delete",
     cancel: "Cancel",
-    back: "Back to Home",
     logout: "Logout",
     noArticles: "No articles yet",
     edit: "Edit",
     confirmDelete: "Are you sure you want to delete this article?",
     saved: "Article saved",
-    contentHelp: "Markdown supported. For images use ![alt](url). For videos paste YouTube/Vimeo links. For files use [filename](url).",
+    publishedMsg: "Article published",
+    contentHelp:
+      "Markdown supported. For images use ![alt](url). For videos paste YouTube/Vimeo links. For files use [filename](url).",
     viewBlog: "View Blog",
+    preview: "Preview",
+    editor: "Editor",
+    uploadMd: "Upload .md",
   },
 };
 
@@ -90,8 +109,10 @@ export default function AdminBlogPage({ params }: PageProps) {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState({
     title: "",
@@ -119,6 +140,21 @@ export default function AdminBlogPage({ params }: PageProps) {
     });
   };
 
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const text = ev.target?.result as string;
+      if (text) {
+        setForm({ ...form, content: form.content ? form.content + "\n\n" + text : text });
+      }
+    };
+    reader.readAsText(file);
+    // Reset so same file can be uploaded again
+    e.target.value = "";
+  };
+
   const fetchArticles = useCallback(async () => {
     const { data } = await supabase
       .from("articles")
@@ -129,7 +165,9 @@ export default function AdminBlogPage({ params }: PageProps) {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
       if (!session) {
         router.push(`/${locale}/login/`);
         return;
@@ -157,6 +195,7 @@ export default function AdminBlogPage({ params }: PageProps) {
   const startNew = () => {
     setIsNew(true);
     setEditing(null);
+    setShowPreview(false);
     setForm({
       title: "",
       slug: "",
@@ -170,6 +209,7 @@ export default function AdminBlogPage({ params }: PageProps) {
   const startEdit = (article: Article) => {
     setIsNew(false);
     setEditing(article);
+    setShowPreview(false);
     setForm({
       title: article.title,
       slug: article.slug,
@@ -180,12 +220,12 @@ export default function AdminBlogPage({ params }: PageProps) {
     });
   };
 
-  const handleSave = async () => {
+  const handleSave = async (publish: boolean) => {
     setSaving(true);
     setMessage("");
 
     const slug = form.slug || generateSlug(form.title);
-    const articleData = { ...form, slug };
+    const articleData = { ...form, slug, published: publish };
 
     if (isNew) {
       const { error } = await supabase.from("articles").insert([articleData]);
@@ -206,10 +246,11 @@ export default function AdminBlogPage({ params }: PageProps) {
       }
     }
 
-    setMessage(t.saved);
+    setMessage(publish ? t.publishedMsg : t.saved);
     setEditing(null);
     setIsNew(false);
     setSaving(false);
+    setShowPreview(false);
     fetchArticles();
   };
 
@@ -222,6 +263,7 @@ export default function AdminBlogPage({ params }: PageProps) {
   const cancelEdit = () => {
     setEditing(null);
     setIsNew(false);
+    setShowPreview(false);
     setMessage("");
   };
 
@@ -237,7 +279,7 @@ export default function AdminBlogPage({ params }: PageProps) {
     <div className="min-h-screen mesh-bg">
       {/* Top bar */}
       <div className="glass border-b border-border">
-        <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <Link href={`/${locale}/`}>
             <Image
               src="/logo.png"
@@ -264,7 +306,7 @@ export default function AdminBlogPage({ params }: PageProps) {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-2xl font-bold text-white">{t.title}</h1>
           {!isNew && !editing && (
@@ -341,214 +383,344 @@ export default function AdminBlogPage({ params }: PageProps) {
               />
             </div>
 
+            {/* Content section with tabs */}
             <div>
-              <label className="block text-sm font-medium text-muted mb-2">
-                {t.content}
-              </label>
-              <p className="text-xs text-muted mb-2">{t.contentHelp}</p>
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-sm font-medium text-muted">
+                  {t.content}
+                </label>
+                <div className="flex items-center gap-1">
+                  {/* Upload markdown file */}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".md,.markdown,.txt"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="px-3 py-1.5 text-xs text-muted hover:text-white hover:bg-white/10 rounded-lg transition-colors flex items-center gap-1.5"
+                  >
+                    <svg
+                      className="w-3.5 h-3.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"
+                      />
+                    </svg>
+                    {t.uploadMd}
+                  </button>
 
-              {/* Formatting Toolbar */}
-              <div className="flex flex-wrap items-center gap-1 mb-2 p-2 bg-dark/30 border border-border rounded-xl">
-                {/* Font size */}
-                <span className="text-xs text-muted mr-1 hidden sm:inline">Size:</span>
-                <button
-                  type="button"
-                  onClick={() => insertFormat("{size:sm}", "{/size}")}
-                  className="px-2 py-1 text-xs text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
-                  title="Small text"
-                >
-                  A<span className="text-[10px]">s</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertFormat("{size:lg}", "{/size}")}
-                  className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
-                  title="Large text"
-                >
-                  A<span className="text-base">l</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertFormat("{size:xl}", "{/size}")}
-                  className="px-2 py-1 text-base text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
-                  title="Extra large text"
-                >
-                  A<span className="text-lg">x</span>
-                </button>
+                  <div className="w-px h-4 bg-border mx-1" />
 
-                <div className="w-px h-5 bg-border mx-1" />
-
-                {/* Headings */}
-                <button
-                  type="button"
-                  onClick={() => insertFormat("# ")}
-                  className="px-2 py-1 text-sm font-bold text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
-                  title="Heading 1"
-                >
-                  H1
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertFormat("## ")}
-                  className="px-2 py-1 text-sm font-bold text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
-                  title="Heading 2"
-                >
-                  H2
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertFormat("### ")}
-                  className="px-2 py-1 text-sm font-bold text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
-                  title="Heading 3"
-                >
-                  H3
-                </button>
-
-                <div className="w-px h-5 bg-border mx-1" />
-
-                {/* Bold */}
-                <button
-                  type="button"
-                  onClick={() => insertFormat("**", "**")}
-                  className="px-2 py-1 text-sm font-bold text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
-                  title="Bold"
-                >
-                  B
-                </button>
-                {/* Italic */}
-                <button
-                  type="button"
-                  onClick={() => insertFormat("*", "*")}
-                  className="px-2 py-1 text-sm italic text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
-                  title="Italic"
-                >
-                  I
-                </button>
-
-                <div className="w-px h-5 bg-border mx-1" />
-
-                {/* Highlights */}
-                <button
-                  type="button"
-                  onClick={() => insertFormat("{hl:yellow}", "{/hl}")}
-                  className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors flex items-center gap-1"
-                  title="Yellow highlight"
-                >
-                  <span className="w-3 h-3 rounded bg-yellow-400/80" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertFormat("{hl:green}", "{/hl}")}
-                  className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors flex items-center gap-1"
-                  title="Green highlight"
-                >
-                  <span className="w-3 h-3 rounded bg-green-400/80" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertFormat("{hl:blue}", "{/hl}")}
-                  className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors flex items-center gap-1"
-                  title="Blue highlight"
-                >
-                  <span className="w-3 h-3 rounded bg-blue-400/80" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertFormat("{hl:pink}", "{/hl}")}
-                  className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors flex items-center gap-1"
-                  title="Pink highlight"
-                >
-                  <span className="w-3 h-3 rounded bg-pink-400/80" />
-                </button>
-
-                <div className="w-px h-5 bg-border mx-1" />
-
-                {/* Lists */}
-                <button
-                  type="button"
-                  onClick={() => insertFormat("- ")}
-                  className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
-                  title="Bullet list"
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /><circle cx="1" cy="6" r="1" fill="currentColor" /><circle cx="1" cy="12" r="1" fill="currentColor" /><circle cx="1" cy="18" r="1" fill="currentColor" /></svg>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => insertFormat("1. ")}
-                  className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
-                  title="Numbered list"
-                >
-                  1.
-                </button>
-
-                <div className="w-px h-5 bg-border mx-1" />
-
-                {/* Blockquote */}
-                <button
-                  type="button"
-                  onClick={() => insertFormat("> ")}
-                  className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
-                  title="Quote"
-                >
-                  &ldquo;&rdquo;
-                </button>
-                {/* Link */}
-                <button
-                  type="button"
-                  onClick={() => insertFormat("[", "](url)")}
-                  className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
-                  title="Link"
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
-                </button>
-                {/* Image */}
-                <button
-                  type="button"
-                  onClick={() => insertFormat("![alt](", ")")}
-                  className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
-                  title="Image"
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
-                </button>
+                  {/* Editor / Preview toggle */}
+                  <button
+                    type="button"
+                    onClick={() => setShowPreview(false)}
+                    className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${
+                      !showPreview
+                        ? "bg-primary/20 text-primary"
+                        : "text-muted hover:text-white hover:bg-white/10"
+                    }`}
+                  >
+                    {t.editor}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowPreview(true)}
+                    className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${
+                      showPreview
+                        ? "bg-primary/20 text-primary"
+                        : "text-muted hover:text-white hover:bg-white/10"
+                    }`}
+                  >
+                    {t.preview}
+                  </button>
+                </div>
               </div>
 
-              <textarea
-                ref={textareaRef}
-                value={form.content}
-                onChange={(e) => setForm({ ...form, content: e.target.value })}
-                rows={16}
-                className="w-full px-4 py-3 bg-dark/50 border border-border rounded-xl text-white placeholder-muted focus:outline-none focus:border-primary transition-colors resize-y font-mono text-sm"
-              />
+              {!showPreview && (
+                <p className="text-xs text-muted mb-2">{t.contentHelp}</p>
+              )}
+
+              {!showPreview ? (
+                <>
+                  {/* Formatting Toolbar */}
+                  <div className="flex flex-wrap items-center gap-1 mb-2 p-2 bg-dark/30 border border-border rounded-xl">
+                    <span className="text-xs text-muted mr-1 hidden sm:inline">
+                      Size:
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("{size:sm}", "{/size}")}
+                      className="px-2 py-1 text-xs text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
+                      title="Small text"
+                    >
+                      A<span className="text-[10px]">s</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("{size:lg}", "{/size}")}
+                      className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
+                      title="Large text"
+                    >
+                      A<span className="text-base">l</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("{size:xl}", "{/size}")}
+                      className="px-2 py-1 text-base text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
+                      title="Extra large text"
+                    >
+                      A<span className="text-lg">x</span>
+                    </button>
+
+                    <div className="w-px h-5 bg-border mx-1" />
+
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("# ")}
+                      className="px-2 py-1 text-sm font-bold text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
+                      title="Heading 1"
+                    >
+                      H1
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("## ")}
+                      className="px-2 py-1 text-sm font-bold text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
+                      title="Heading 2"
+                    >
+                      H2
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("### ")}
+                      className="px-2 py-1 text-sm font-bold text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
+                      title="Heading 3"
+                    >
+                      H3
+                    </button>
+
+                    <div className="w-px h-5 bg-border mx-1" />
+
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("**", "**")}
+                      className="px-2 py-1 text-sm font-bold text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
+                      title="Bold"
+                    >
+                      B
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("*", "*")}
+                      className="px-2 py-1 text-sm italic text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
+                      title="Italic"
+                    >
+                      I
+                    </button>
+
+                    <div className="w-px h-5 bg-border mx-1" />
+
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("{hl:yellow}", "{/hl}")}
+                      className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors flex items-center gap-1"
+                      title="Yellow highlight"
+                    >
+                      <span className="w-3 h-3 rounded bg-yellow-400/80" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("{hl:green}", "{/hl}")}
+                      className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors flex items-center gap-1"
+                      title="Green highlight"
+                    >
+                      <span className="w-3 h-3 rounded bg-green-400/80" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("{hl:blue}", "{/hl}")}
+                      className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors flex items-center gap-1"
+                      title="Blue highlight"
+                    >
+                      <span className="w-3 h-3 rounded bg-blue-400/80" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("{hl:pink}", "{/hl}")}
+                      className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors flex items-center gap-1"
+                      title="Pink highlight"
+                    >
+                      <span className="w-3 h-3 rounded bg-pink-400/80" />
+                    </button>
+
+                    <div className="w-px h-5 bg-border mx-1" />
+
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("- ")}
+                      className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
+                      title="Bullet list"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 6h16M4 12h16M4 18h16"
+                        />
+                        <circle cx="1" cy="6" r="1" fill="currentColor" />
+                        <circle cx="1" cy="12" r="1" fill="currentColor" />
+                        <circle cx="1" cy="18" r="1" fill="currentColor" />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("1. ")}
+                      className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
+                      title="Numbered list"
+                    >
+                      1.
+                    </button>
+
+                    <div className="w-px h-5 bg-border mx-1" />
+
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("> ")}
+                      className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
+                      title="Quote"
+                    >
+                      &ldquo;&rdquo;
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("[", "](url)")}
+                      className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
+                      title="Link"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
+                        />
+                      </svg>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => insertFormat("![alt](", ")")}
+                      className="px-2 py-1 text-sm text-muted hover:text-white hover:bg-white/10 rounded transition-colors"
+                      title="Image"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <textarea
+                    ref={textareaRef}
+                    value={form.content}
+                    onChange={(e) =>
+                      setForm({ ...form, content: e.target.value })
+                    }
+                    rows={20}
+                    className="w-full px-4 py-3 bg-dark/50 border border-border rounded-xl text-white placeholder-muted focus:outline-none focus:border-primary transition-colors resize-y font-mono text-sm"
+                  />
+                </>
+              ) : (
+                /* Live Preview */
+                <div className="w-full min-h-[400px] px-6 py-5 bg-dark/30 border border-border rounded-xl overflow-y-auto max-h-[600px]">
+                  {form.cover_image_url && (
+                    <div className="relative rounded-xl overflow-hidden mb-6">
+                      <img
+                        src={form.cover_image_url}
+                        alt={form.title}
+                        className="w-full max-h-[300px] object-cover"
+                      />
+                    </div>
+                  )}
+                  {form.title && (
+                    <h1 className="text-2xl md:text-3xl font-bold text-white mb-6">
+                      {form.title}
+                    </h1>
+                  )}
+                  {form.content ? (
+                    <div className="prose-custom">
+                      {renderContent(form.content)}
+                    </div>
+                  ) : (
+                    <p className="text-muted italic">
+                      {locale === "en"
+                        ? "Start typing to see preview..."
+                        : locale === "kk"
+                        ? "Алдын ала қарау үшін жазуды бастаңыз..."
+                        : "Начните писать, чтобы увидеть предпросмотр..."}
+                    </p>
+                  )}
+                </div>
+              )}
             </div>
 
-            <div className="flex items-center gap-3">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={form.published}
-                  onChange={(e) =>
-                    setForm({ ...form, published: e.target.checked })
-                  }
-                  className="w-4 h-4 rounded border-border bg-dark/50 text-primary focus:ring-primary"
-                />
-                <span className="text-sm text-light">
-                  {form.published ? t.published : t.draft}
-                </span>
-              </label>
-            </div>
-
-            <div className="flex gap-3 pt-2">
+            {/* Action buttons - separated */}
+            <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-border">
               <button
-                onClick={handleSave}
+                onClick={() => handleSave(false)}
+                disabled={saving || !form.title}
+                className="btn-secondary text-sm disabled:opacity-50"
+              >
+                {saving ? "..." : t.saveDraft}
+              </button>
+              <button
+                onClick={() => handleSave(true)}
                 disabled={saving || !form.title}
                 className="btn-primary text-sm disabled:opacity-50"
               >
-                {saving ? "..." : t.save}
+                {saving ? "..." : t.publish}
               </button>
-              <button
-                onClick={cancelEdit}
-                className="btn-secondary text-sm"
-              >
+              {editing && form.published && (
+                <button
+                  onClick={() => handleSave(false)}
+                  disabled={saving}
+                  className="px-6 py-3 text-sm text-yellow-400 border border-yellow-400/30 rounded-full hover:bg-yellow-400/10 transition-colors disabled:opacity-50"
+                >
+                  {t.unpublish}
+                </button>
+              )}
+              <div className="flex-1" />
+              <button onClick={cancelEdit} className="btn-secondary text-sm">
                 {t.cancel}
               </button>
             </div>
