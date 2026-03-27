@@ -20,7 +20,7 @@ const navTranslations: { [key: string]: { [key: string]: string } } = {
     standards: "Стандарты",
     team: "Команда",
     contact: "Контакты",
-    blog: "Блог",
+    blog: "Персональный блог",
     cta: "Связаться с нами",
   },
   kk: {
@@ -30,7 +30,7 @@ const navTranslations: { [key: string]: { [key: string]: string } } = {
     standards: "Стандарттар",
     team: "Команда",
     contact: "Байланыс",
-    blog: "Блог",
+    blog: "Жеке блог",
     cta: "Бізбен байланысу",
   },
   en: {
@@ -40,7 +40,7 @@ const navTranslations: { [key: string]: { [key: string]: string } } = {
     standards: "Standards",
     team: "Team",
     contact: "Contact",
-    blog: "Blog",
+    blog: "Personal Blog",
     cta: "Contact Us",
   },
 };

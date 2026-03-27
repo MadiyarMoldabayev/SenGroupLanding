@@ -33,21 +33,21 @@ const teamMembers: TeamMember[] = [
 
 const sectionTranslations = {
   ru: {
-    title: "Голос лидера",
+    title: "Персональный блог",
     description:
       "Идеи, мысли и статьи от основателя SEN Group — Батимы Мукиной",
     readMore: "Читать далее",
     allArticles: "Все статьи",
   },
   kk: {
-    title: "Көшбасшы дауысы",
+    title: "Жеке блог",
     description:
       "SEN Group негізін қалаушы — Батима Мукинаның идеялары, ойлары мен мақалалары",
     readMore: "Толығырақ оқу",
     allArticles: "Барлық мақалалар",
   },
   en: {
-    title: "Leader's Voice",
+    title: "Personal Blog",
     description:
       "Ideas, thoughts and articles from the founder of SEN Group — Batima Mukina",
     readMore: "Read more",

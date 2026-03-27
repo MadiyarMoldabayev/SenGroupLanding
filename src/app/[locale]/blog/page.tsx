@@ -10,21 +10,21 @@ import Footer from "@/components/Footer";
 
 const translations: { [key: string]: { [key: string]: string } } = {
   ru: {
-    title: "Блог",
+    title: "Персональный блог",
     subtitle: "Статьи и мысли от Батимы Мукиной",
     readMore: "Читать далее",
     noArticles: "Статей пока нет. Загляните позже!",
     back: "На главную",
   },
   kk: {
-    title: "Блог",
+    title: "Жеке блог",
     subtitle: "Батима Мукинаның мақалалары мен ойлары",
     readMore: "Толығырақ оқу",
     noArticles: "Мақалалар жоқ. Кейінірек кіріңіз!",
     back: "Басты бетке",
   },
   en: {
-    title: "Blog",
+    title: "Personal Blog",
     subtitle: "Articles and thoughts by Batima Mukina",
     readMore: "Read more",
     noArticles: "No articles yet. Check back later!",
@@ -129,6 +129,19 @@ export default function BlogPage({ params }: PageProps) {
               ))}
             </div>
           )}
+          {/* Admin login link */}
+          <div className="text-center mt-16">
+            <Link
+              href={`/${locale}/login/`}
+              className="text-xs text-muted/50 hover:text-muted transition-colors"
+            >
+              {locale === "en"
+                ? "Admin"
+                : locale === "kk"
+                ? "Әкімші"
+                : "Админ"}
+            </Link>
+          </div>
         </div>
       </section>
 
