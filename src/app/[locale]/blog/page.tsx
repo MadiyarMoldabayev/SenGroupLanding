@@ -70,7 +70,20 @@ export default function BlogPage({ params }: PageProps) {
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
               {t.title}
             </h1>
-            <p className="text-lg text-muted">{t.subtitle}</p>
+            <p className="text-lg text-muted mb-6">{t.subtitle}</p>
+            <Link
+              href={`/${locale}/login/`}
+              className="btn-secondary text-sm inline-flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+              </svg>
+              {locale === "en"
+                ? "Sign In"
+                : locale === "kk"
+                ? "Кіру"
+                : "Войти"}
+            </Link>
           </motion.div>
 
           {loading ? (
@@ -129,22 +142,6 @@ export default function BlogPage({ params }: PageProps) {
               ))}
             </div>
           )}
-          {/* Admin login button */}
-          <div className="text-center mt-16">
-            <Link
-              href={`/${locale}/login/`}
-              className="btn-secondary text-sm inline-flex items-center gap-2"
-            >
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
-              </svg>
-              {locale === "en"
-                ? "Sign In"
-                : locale === "kk"
-                ? "Кіру"
-                : "Войти"}
-            </Link>
-          </div>
         </div>
       </section>
 
