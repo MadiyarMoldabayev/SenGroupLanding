@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase, Article, safeLocale } from "@/lib/supabase";
-import { renderContent } from "@/lib/renderContent";
+import { renderContent, isHtmlContent, RenderHtmlArticle } from "@/lib/renderContent";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Header from "@/components/Header";
@@ -94,9 +94,13 @@ export default function BlogPostPage({ params }: PageProps) {
                 {article.title}
               </h1>
 
-              <div className="prose-custom">
-                {renderContent(article.content)}
-              </div>
+              {isHtmlContent(article.content) ? (
+                <RenderHtmlArticle content={article.content} />
+              ) : (
+                <div className="prose-custom">
+                  {renderContent(article.content)}
+                </div>
+              )}
             </motion.article>
           )}
         </div>

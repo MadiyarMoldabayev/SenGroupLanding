@@ -1,5 +1,42 @@
 import React from "react";
 
+export function isHtmlContent(content: string): boolean {
+  const trimmed = content.trim();
+  return (
+    trimmed.startsWith("<!DOCTYPE") ||
+    trimmed.startsWith("<html") ||
+    trimmed.startsWith("<article") ||
+    trimmed.startsWith("<div") ||
+    trimmed.startsWith("<!-- html -->")
+  );
+}
+
+export function extractHtmlBody(html: string): string {
+  // Extract content between <body> tags, or between <article> tags, or return as-is
+  const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+  if (bodyMatch) return bodyMatch[1].trim();
+  const articleMatch = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
+  if (articleMatch) return articleMatch[1].trim();
+  // Strip <html>, <head>, <style> tags but keep the rest
+  return html
+    .replace(/<html[^>]*>/gi, "")
+    .replace(/<\/html>/gi, "")
+    .replace(/<head>[\s\S]*?<\/head>/gi, "")
+    .replace(/<style>[\s\S]*?<\/style>/gi, "")
+    .replace(/<\/?body[^>]*>/gi, "")
+    .trim();
+}
+
+export function RenderHtmlArticle({ content }: { content: string }) {
+  const html = extractHtmlBody(content);
+  return (
+    <div
+      className="html-article"
+      dangerouslySetInnerHTML={{ __html: html }}
+    />
+  );
+}
+
 const highlightColors: { [key: string]: string } = {
   yellow: "bg-yellow-400/20 text-yellow-200 px-1 rounded",
   green: "bg-green-400/20 text-green-200 px-1 rounded",

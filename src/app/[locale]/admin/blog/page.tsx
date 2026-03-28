@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { supabase, Article, safeLocale } from "@/lib/supabase";
-import { renderContent } from "@/lib/renderContent";
+import { renderContent, isHtmlContent, RenderHtmlArticle } from "@/lib/renderContent";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -110,6 +110,7 @@ export default function AdminBlogPage({ params }: PageProps) {
   const [message, setMessage] = useState("");
   const [authenticated, setAuthenticated] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
+  const [contentMode, setContentMode] = useState<"markdown" | "html">("markdown");
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -147,11 +148,17 @@ export default function AdminBlogPage({ params }: PageProps) {
     reader.onload = (ev) => {
       const text = ev.target?.result as string;
       if (text) {
-        setForm({ ...form, content: form.content ? form.content + "\n\n" + text : text });
+        const isHtml = file.name.endsWith(".html") || file.name.endsWith(".htm");
+        if (isHtml) {
+          setContentMode("html");
+          setForm({ ...form, content: text });
+        } else {
+          setContentMode("markdown");
+          setForm({ ...form, content: form.content ? form.content + "\n\n" + text : text });
+        }
       }
     };
     reader.readAsText(file);
-    // Reset so same file can be uploaded again
     e.target.value = "";
   };
 
@@ -196,6 +203,7 @@ export default function AdminBlogPage({ params }: PageProps) {
     setIsNew(true);
     setEditing(null);
     setShowPreview(false);
+    setContentMode("markdown");
     setForm({
       title: "",
       slug: "",
@@ -210,6 +218,7 @@ export default function AdminBlogPage({ params }: PageProps) {
     setIsNew(false);
     setEditing(article);
     setShowPreview(false);
+    setContentMode(isHtmlContent(article.content) ? "html" : "markdown");
     setForm({
       title: article.title,
       slug: article.slug,
@@ -394,7 +403,7 @@ export default function AdminBlogPage({ params }: PageProps) {
                   <input
                     ref={fileInputRef}
                     type="file"
-                    accept=".md,.markdown,.txt"
+                    accept=".md,.markdown,.txt,.html,.htm"
                     onChange={handleFileUpload}
                     className="hidden"
                   />
@@ -417,6 +426,32 @@ export default function AdminBlogPage({ params }: PageProps) {
                       />
                     </svg>
                     {t.uploadMd}
+                  </button>
+
+                  <div className="w-px h-4 bg-border mx-1" />
+
+                  {/* Content mode toggle */}
+                  <button
+                    type="button"
+                    onClick={() => setContentMode("markdown")}
+                    className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${
+                      contentMode === "markdown"
+                        ? "bg-accent/20 text-accent"
+                        : "text-muted hover:text-white hover:bg-white/10"
+                    }`}
+                  >
+                    Markdown
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setContentMode("html")}
+                    className={`px-3 py-1.5 text-xs rounded-lg transition-colors ${
+                      contentMode === "html"
+                        ? "bg-accent/20 text-accent"
+                        : "text-muted hover:text-white hover:bg-white/10"
+                    }`}
+                  >
+                    HTML
                   </button>
 
                   <div className="w-px h-4 bg-border mx-1" />
@@ -453,8 +488,8 @@ export default function AdminBlogPage({ params }: PageProps) {
 
               {!showPreview ? (
                 <>
-                  {/* Formatting Toolbar */}
-                  <div className="flex flex-wrap items-center gap-1 mb-2 p-2 bg-dark/30 border border-border rounded-xl">
+                  {/* Formatting Toolbar - only for markdown mode */}
+                  {contentMode === "markdown" && <div className="flex flex-wrap items-center gap-1 mb-2 p-2 bg-dark/30 border border-border rounded-xl">
                     <span className="text-xs text-muted mr-1 hidden sm:inline">
                       Size:
                     </span>
@@ -648,7 +683,7 @@ export default function AdminBlogPage({ params }: PageProps) {
                         />
                       </svg>
                     </button>
-                  </div>
+                  </div>}
 
                   <textarea
                     ref={textareaRef}
@@ -678,9 +713,13 @@ export default function AdminBlogPage({ params }: PageProps) {
                     </h1>
                   )}
                   {form.content ? (
-                    <div className="prose-custom">
-                      {renderContent(form.content)}
-                    </div>
+                    contentMode === "html" || isHtmlContent(form.content) ? (
+                      <RenderHtmlArticle content={form.content} />
+                    ) : (
+                      <div className="prose-custom">
+                        {renderContent(form.content)}
+                      </div>
+                    )
                   ) : (
                     <p className="text-muted italic">
                       {locale === "en"
