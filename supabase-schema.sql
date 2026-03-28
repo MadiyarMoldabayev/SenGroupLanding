@@ -46,5 +46,23 @@ CREATE POLICY "Authenticated users can manage articles"
   USING (true)
   WITH CHECK (true);
 
--- Storage bucket for article images (run separately if needed)
--- INSERT INTO storage.buckets (id, name, public) VALUES ('article-images', 'article-images', true);
+-- Storage bucket for article cover images
+-- Run this to create the bucket:
+INSERT INTO storage.buckets (id, name, public) VALUES ('article-images', 'article-images', true);
+
+-- Allow public read access to article images
+CREATE POLICY "Public read access for article images"
+  ON storage.objects FOR SELECT
+  USING (bucket_id = 'article-images');
+
+-- Allow authenticated users to upload article images
+CREATE POLICY "Authenticated users can upload article images"
+  ON storage.objects FOR INSERT
+  TO authenticated
+  WITH CHECK (bucket_id = 'article-images');
+
+-- Allow authenticated users to delete article images
+CREATE POLICY "Authenticated users can delete article images"
+  ON storage.objects FOR DELETE
+  TO authenticated
+  USING (bucket_id = 'article-images');

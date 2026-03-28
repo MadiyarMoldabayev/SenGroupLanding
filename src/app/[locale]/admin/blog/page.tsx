@@ -114,6 +114,8 @@ export default function AdminBlogPage({ params }: PageProps) {
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const coverInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingCover, setUploadingCover] = useState(false);
 
   const [form, setForm] = useState({
     title: "",
@@ -159,6 +161,34 @@ export default function AdminBlogPage({ params }: PageProps) {
       }
     };
     reader.readAsText(file);
+    e.target.value = "";
+  };
+
+  const handleCoverUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingCover(true);
+
+    const fileExt = file.name.split(".").pop();
+    const fileName = `cover-${Date.now()}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("article-images")
+      .upload(fileName, file, { upsert: true });
+
+    if (uploadError) {
+      setMessage(uploadError.message);
+      setUploadingCover(false);
+      e.target.value = "";
+      return;
+    }
+
+    const { data: urlData } = supabase.storage
+      .from("article-images")
+      .getPublicUrl(fileName);
+
+    setForm({ ...form, cover_image_url: urlData.publicUrl });
+    setUploadingCover(false);
     e.target.value = "";
   };
 
@@ -380,16 +410,50 @@ export default function AdminBlogPage({ params }: PageProps) {
             <div>
               <label className="block text-sm font-medium text-muted mb-2">
                 {t.coverImage}
+                <span className="text-xs text-muted/60 ml-2 font-normal">
+                  (1200 x 630px)
+                </span>
               </label>
-              <input
-                type="text"
-                value={form.cover_image_url}
-                onChange={(e) =>
-                  setForm({ ...form, cover_image_url: e.target.value })
-                }
-                placeholder="https://..."
-                className="w-full px-4 py-3 bg-dark/50 border border-border rounded-xl text-white placeholder-muted focus:outline-none focus:border-primary transition-colors"
-              />
+              <div className="flex gap-3 items-start">
+                <div className="flex-1">
+                  <input
+                    type="text"
+                    value={form.cover_image_url}
+                    onChange={(e) =>
+                      setForm({ ...form, cover_image_url: e.target.value })
+                    }
+                    placeholder="https://..."
+                    className="w-full px-4 py-3 bg-dark/50 border border-border rounded-xl text-white placeholder-muted focus:outline-none focus:border-primary transition-colors"
+                  />
+                </div>
+                <input
+                  ref={coverInputRef}
+                  type="file"
+                  accept="image/*"
+                  onChange={handleCoverUpload}
+                  className="hidden"
+                />
+                <button
+                  type="button"
+                  onClick={() => coverInputRef.current?.click()}
+                  disabled={uploadingCover}
+                  className="px-4 py-3 bg-dark/50 border border-border rounded-xl text-sm text-muted hover:text-white hover:border-primary transition-colors disabled:opacity-50 flex items-center gap-2 flex-shrink-0"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  {uploadingCover ? "..." : locale === "en" ? "Upload" : locale === "kk" ? "Жүктеу" : "Загрузить"}
+                </button>
+              </div>
+              {form.cover_image_url && (
+                <div className="mt-3 relative rounded-xl overflow-hidden h-32">
+                  <img
+                    src={form.cover_image_url}
+                    alt="Cover preview"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
             </div>
 
             {/* Content section with tabs */}
