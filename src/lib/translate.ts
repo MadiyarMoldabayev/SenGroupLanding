@@ -7,7 +7,6 @@ export async function translateText(
 ): Promise<string> {
   if (!text.trim()) return "";
 
-  // Split into chunks of ~4000 chars to avoid API limits
   const chunks = splitTextIntoChunks(text, 4000);
   const translated: string[] = [];
 
@@ -50,18 +49,12 @@ function splitTextIntoChunks(text: string, maxLen: number): string[] {
   return chunks;
 }
 
-/**
- * For HTML content: extract only text nodes for translation,
- * preserving the HTML structure with original styles.
- */
 function stripHtmlBoilerplate(html: string): string {
-  // Remove everything before <body> or the first structural tag
   let content = html;
-  // Remove doctype, html, head, style, script
   content = content.replace(/<!DOCTYPE[^>]*>/gi, "");
   content = content.replace(/<html[^>]*>/gi, "");
   content = content.replace(/<\/html>/gi, "");
-  content = content.replace(/<head>[\s\S]*?<\/head>/gi, "");
+  content = content.replace(/<head[^>]*>[\s\S]*?<\/head>/gi, "");
   content = content.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "");
   content = content.replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "");
   content = content.replace(/<link[^>]*\/?>/gi, "");
@@ -82,25 +75,44 @@ function isHtml(content: string): boolean {
 }
 
 /**
- * Translate HTML content by extracting text, translating it,
- * then re-inserting into the structure.
- * We strip boilerplate first, then translate the clean HTML body.
- * Google Translate handles HTML tags reasonably well when the
- * content is clean (no <style> or <script>).
+ * Translate HTML by protecting tags with placeholders.
+ * 1. Replace all HTML tags with numbered placeholders
+ * 2. Translate only the plain text
+ * 3. Restore the tags from placeholders
  */
 async function translateHtmlContent(
   html: string,
   sourceLang: string,
   targetLang: string
 ): Promise<string> {
-  // Strip styles, scripts, head — keep only the article body HTML
   const cleanHtml = stripHtmlBoilerplate(html);
 
-  // Translate the clean HTML — Google Translate preserves HTML tags
-  // when passed as plain text with tags
-  const translated = await translateText(cleanHtml, sourceLang, targetLang);
+  // Extract all HTML tags and replace with placeholders
+  const tags: string[] = [];
+  const textWithPlaceholders = cleanHtml.replace(
+    /<[^>]+>/g,
+    (match) => {
+      const idx = tags.length;
+      tags.push(match);
+      return `[[T${idx}]]`;
+    }
+  );
 
-  return translated;
+  // Translate the text (which now only contains text + placeholders)
+  const translatedText = await translateText(
+    textWithPlaceholders,
+    sourceLang,
+    targetLang
+  );
+
+  // Restore HTML tags from placeholders
+  // Handle possible spacing changes from translation
+  const result = translatedText.replace(
+    /\[\[\s*T\s*(\d+)\s*\]\]/g,
+    (_, idx) => tags[parseInt(idx)] || ""
+  );
+
+  return result;
 }
 
 export async function translateArticle(
