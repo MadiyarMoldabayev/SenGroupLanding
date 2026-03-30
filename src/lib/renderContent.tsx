@@ -7,22 +7,30 @@ export function isHtmlContent(content: string): boolean {
     trimmed.startsWith("<html") ||
     trimmed.startsWith("<article") ||
     trimmed.startsWith("<div") ||
-    trimmed.startsWith("<!-- html -->")
+    trimmed.startsWith("<!-- html -->") ||
+    /<div\s+class=/.test(trimmed.slice(0, 500))
   );
 }
 
 export function extractHtmlBody(html: string): string {
   // Extract content between <body> tags, or between <article> tags, or return as-is
   const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
-  if (bodyMatch) return bodyMatch[1].trim();
+  if (bodyMatch) return stripBoilerplate(bodyMatch[1]);
   const articleMatch = html.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
-  if (articleMatch) return articleMatch[1].trim();
-  // Strip <html>, <head>, <style> tags but keep the rest
+  if (articleMatch) return stripBoilerplate(articleMatch[1]);
+  return stripBoilerplate(html);
+}
+
+function stripBoilerplate(html: string): string {
   return html
+    .replace(/<!DOCTYPE[^>]*>/gi, "")
     .replace(/<html[^>]*>/gi, "")
     .replace(/<\/html>/gi, "")
-    .replace(/<head>[\s\S]*?<\/head>/gi, "")
-    .replace(/<style>[\s\S]*?<\/style>/gi, "")
+    .replace(/<head[^>]*>[\s\S]*?<\/head>/gi, "")
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
+    .replace(/<link[^>]*\/?>/gi, "")
+    .replace(/<meta[^>]*\/?>/gi, "")
     .replace(/<\/?body[^>]*>/gi, "")
     .trim();
 }
