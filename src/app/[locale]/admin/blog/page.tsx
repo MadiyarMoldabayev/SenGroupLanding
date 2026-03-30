@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { supabase, Article, safeLocale } from "@/lib/supabase";
 import { renderContent, isHtmlContent, RenderHtmlArticle } from "@/lib/renderContent";
-import { translateArticle } from "@/lib/translate";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -36,10 +35,13 @@ const translations: { [key: string]: { [key: string]: string } } = {
     preview: "Предпросмотр",
     editor: "Редактор",
     uploadMd: "Загрузить .md",
-    autoTranslate: "Авто-перевод",
-    translating: "Перевод...",
-    translated: "Переведено на казахский и английский",
-    translateError: "Ошибка перевода",
+    translations: "Переводы (KZ / EN)",
+    titleKk: "Заголовок (KZ)",
+    titleEn: "Title (EN)",
+    excerptKk: "Описание (KZ)",
+    excerptEn: "Description (EN)",
+    contentKk: "Содержание (KZ)",
+    contentEn: "Content (EN)",
   },
   kk: {
     title: "Блогты басқару",
@@ -68,10 +70,13 @@ const translations: { [key: string]: { [key: string]: string } } = {
     preview: "Алдын ала қарау",
     editor: "Редактор",
     uploadMd: ".md жүктеу",
-    autoTranslate: "Авто-аударма",
-    translating: "Аударылуда...",
-    translated: "Қазақша және ағылшынша аударылды",
-    translateError: "Аударма қатесі",
+    translations: "Аудармалар (KZ / EN)",
+    titleKk: "Тақырып (KZ)",
+    titleEn: "Title (EN)",
+    excerptKk: "Сипаттама (KZ)",
+    excerptEn: "Description (EN)",
+    contentKk: "Мазмұны (KZ)",
+    contentEn: "Content (EN)",
   },
   en: {
     title: "Blog Management",
@@ -100,10 +105,13 @@ const translations: { [key: string]: { [key: string]: string } } = {
     preview: "Preview",
     editor: "Editor",
     uploadMd: "Upload .md",
-    autoTranslate: "Auto Translate",
-    translating: "Translating...",
-    translated: "Translated to Kazakh and English",
-    translateError: "Translation error",
+    translations: "Translations (KZ / EN)",
+    titleKk: "Title (KZ)",
+    titleEn: "Title (EN)",
+    excerptKk: "Description (KZ)",
+    excerptEn: "Description (EN)",
+    contentKk: "Content (KZ)",
+    contentEn: "Content (EN)",
   },
 };
 
@@ -124,7 +132,7 @@ export default function AdminBlogPage({ params }: PageProps) {
   const [authenticated, setAuthenticated] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [contentMode, setContentMode] = useState<"markdown" | "html">("markdown");
-  const [translating, setTranslating] = useState(false);
+  const [showTranslations, setShowTranslations] = useState(false);
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -289,31 +297,6 @@ export default function AdminBlogPage({ params }: PageProps) {
       excerpt_en: article.excerpt_en || "",
       excerpt_kk: article.excerpt_kk || "",
     });
-  };
-
-  const handleTranslate = async () => {
-    if (!form.title && !form.content) return;
-    setTranslating(true);
-    setMessage("");
-    try {
-      const [enResult, kkResult] = await Promise.all([
-        translateArticle(form.title, form.excerpt, form.content, "ru", "en"),
-        translateArticle(form.title, form.excerpt, form.content, "ru", "kk"),
-      ]);
-      setForm({
-        ...form,
-        title_en: enResult.title,
-        excerpt_en: enResult.excerpt,
-        content_en: enResult.content,
-        title_kk: kkResult.title,
-        excerpt_kk: kkResult.excerpt,
-        content_kk: kkResult.content,
-      });
-      setMessage(t.translated);
-    } catch {
-      setMessage(t.translateError);
-    }
-    setTranslating(false);
   };
 
   const handleSave = async (publish: boolean) => {
@@ -854,24 +837,105 @@ export default function AdminBlogPage({ params }: PageProps) {
               )}
             </div>
 
-            {/* Action buttons - separated */}
-            <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-border">
+            {/* Translations section */}
+            <div className="border-t border-border pt-4">
               <button
-                onClick={handleTranslate}
-                disabled={translating || !form.title}
-                className="px-6 py-3 text-sm text-accent border border-accent/30 rounded-full hover:bg-accent/10 transition-colors disabled:opacity-50 flex items-center gap-2"
+                type="button"
+                onClick={() => setShowTranslations(!showTranslations)}
+                className="flex items-center gap-2 text-sm text-accent hover:text-accent/80 transition-colors mb-4"
               >
+                <svg
+                  className={`w-4 h-4 transition-transform ${showTranslations ? "rotate-90" : ""}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
                 </svg>
-                {translating ? t.translating : t.autoTranslate}
+                {t.translations}
+                {(form.title_en || form.title_kk) && (
+                  <span className="text-xs text-accent/60 ml-2">
+                    EN {form.title_en ? "✓" : "—"} · KK {form.title_kk ? "✓" : "—"}
+                  </span>
+                )}
               </button>
-              {(form.title_en || form.title_kk) && (
-                <span className="text-xs text-accent/60">
-                  EN {form.title_en ? "✓" : "—"} · KK {form.title_kk ? "✓" : "—"}
-                </span>
+
+              {showTranslations && (
+                <div className="space-y-4 mb-4 p-4 bg-dark/30 border border-border rounded-xl">
+                  {/* Kazakh */}
+                  <div className="space-y-3">
+                    <h4 className="text-xs font-semibold text-muted uppercase tracking-wider">🇰🇿 Қазақша</h4>
+                    <div>
+                      <label className="block text-xs text-muted mb-1">{t.titleKk}</label>
+                      <input
+                        type="text"
+                        value={form.title_kk}
+                        onChange={(e) => setForm({ ...form, title_kk: e.target.value })}
+                        className="w-full px-3 py-2 bg-dark/50 border border-border rounded-lg text-white text-sm focus:outline-none focus:border-primary transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-muted mb-1">{t.excerptKk}</label>
+                      <textarea
+                        value={form.excerpt_kk}
+                        onChange={(e) => setForm({ ...form, excerpt_kk: e.target.value })}
+                        rows={2}
+                        className="w-full px-3 py-2 bg-dark/50 border border-border rounded-lg text-white text-sm focus:outline-none focus:border-primary transition-colors resize-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-muted mb-1">{t.contentKk}</label>
+                      <textarea
+                        value={form.content_kk}
+                        onChange={(e) => setForm({ ...form, content_kk: e.target.value })}
+                        rows={8}
+                        className="w-full px-3 py-2 bg-dark/50 border border-border rounded-lg text-white text-sm font-mono focus:outline-none focus:border-primary transition-colors resize-y"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="border-t border-border my-4" />
+
+                  {/* English */}
+                  <div className="space-y-3">
+                    <h4 className="text-xs font-semibold text-muted uppercase tracking-wider">🇬🇧 English</h4>
+                    <div>
+                      <label className="block text-xs text-muted mb-1">{t.titleEn}</label>
+                      <input
+                        type="text"
+                        value={form.title_en}
+                        onChange={(e) => setForm({ ...form, title_en: e.target.value })}
+                        className="w-full px-3 py-2 bg-dark/50 border border-border rounded-lg text-white text-sm focus:outline-none focus:border-primary transition-colors"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-muted mb-1">{t.excerptEn}</label>
+                      <textarea
+                        value={form.excerpt_en}
+                        onChange={(e) => setForm({ ...form, excerpt_en: e.target.value })}
+                        rows={2}
+                        className="w-full px-3 py-2 bg-dark/50 border border-border rounded-lg text-white text-sm focus:outline-none focus:border-primary transition-colors resize-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-muted mb-1">{t.contentEn}</label>
+                      <textarea
+                        value={form.content_en}
+                        onChange={(e) => setForm({ ...form, content_en: e.target.value })}
+                        rows={8}
+                        className="w-full px-3 py-2 bg-dark/50 border border-border rounded-lg text-white text-sm font-mono focus:outline-none focus:border-primary transition-colors resize-y"
+                      />
+                    </div>
+                  </div>
+                </div>
               )}
-              <div className="w-px h-6 bg-border mx-1" />
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex flex-wrap items-center gap-3 pt-2 border-t border-border">
               <button
                 onClick={() => handleSave(false)}
                 disabled={saving || !form.title}
