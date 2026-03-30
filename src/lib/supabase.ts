@@ -21,4 +21,24 @@ export interface Article {
   published: boolean;
   created_at: string;
   updated_at: string;
+  title_en: string | null;
+  title_kk: string | null;
+  content_en: string | null;
+  content_kk: string | null;
+  excerpt_en: string | null;
+  excerpt_kk: string | null;
+}
+
+export function getLocalizedField(
+  article: Article,
+  field: "title" | "content" | "excerpt",
+  locale: string
+): string {
+  if (locale === "en" && article[`${field}_en` as keyof Article]) {
+    return article[`${field}_en` as keyof Article] as string;
+  }
+  if (locale === "kk" && article[`${field}_kk` as keyof Article]) {
+    return article[`${field}_kk` as keyof Article] as string;
+  }
+  return article[field];
 }

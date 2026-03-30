@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import cn from "classnames";
-import { supabase, Article } from "@/lib/supabase";
+import { supabase, Article, getLocalizedField } from "@/lib/supabase";
 
 interface TeamMember {
   id: number;
@@ -205,11 +205,11 @@ export default function TeamSection({ locale }: TeamSectionProps) {
                           )}
                         </p>
                         <h3 className="text-white font-semibold text-base mb-2 group-hover:text-primary transition-colors line-clamp-2">
-                          {article.title}
+                          {getLocalizedField(article, "title", locale)}
                         </h3>
-                        {article.excerpt && (
+                        {getLocalizedField(article, "excerpt", locale) && (
                           <p className="text-muted text-sm line-clamp-2">
-                            {article.excerpt}
+                            {getLocalizedField(article, "excerpt", locale)}
                           </p>
                         )}
                         <span className="inline-block mt-3 text-xs text-primary font-medium">

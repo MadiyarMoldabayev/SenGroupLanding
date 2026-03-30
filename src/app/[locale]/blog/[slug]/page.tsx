@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabase, Article, safeLocale } from "@/lib/supabase";
+import { supabase, Article, safeLocale, getLocalizedField } from "@/lib/supabase";
 import { renderContent, isHtmlContent, RenderHtmlArticle } from "@/lib/renderContent";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -91,16 +91,19 @@ export default function BlogPostPage({ params }: PageProps) {
               </p>
 
               <h1 className="text-3xl md:text-4xl font-bold text-white mb-8">
-                {article.title}
+                {getLocalizedField(article, "title", locale)}
               </h1>
 
-              {isHtmlContent(article.content) ? (
-                <RenderHtmlArticle content={article.content} />
-              ) : (
-                <div className="prose-custom">
-                  {renderContent(article.content)}
-                </div>
-              )}
+              {(() => {
+                const localContent = getLocalizedField(article, "content", locale);
+                return isHtmlContent(localContent) ? (
+                  <RenderHtmlArticle content={localContent} />
+                ) : (
+                  <div className="prose-custom">
+                    {renderContent(localContent)}
+                  </div>
+                );
+              })()}
             </motion.article>
           )}
         </div>

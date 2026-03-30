@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { supabase, Article, safeLocale } from "@/lib/supabase";
+import { supabase, Article, safeLocale, getLocalizedField } from "@/lib/supabase";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -126,11 +126,11 @@ export default function BlogPage({ params }: PageProps) {
                         )}
                       </p>
                       <h2 className="text-xl font-bold text-white mb-3 group-hover:text-primary transition-colors">
-                        {article.title}
+                        {getLocalizedField(article, "title", locale)}
                       </h2>
-                      {article.excerpt && (
+                      {getLocalizedField(article, "excerpt", locale) && (
                         <p className="text-muted text-sm line-clamp-3">
-                          {article.excerpt}
+                          {getLocalizedField(article, "excerpt", locale)}
                         </p>
                       )}
                       <span className="inline-block mt-4 text-sm text-primary font-medium">
